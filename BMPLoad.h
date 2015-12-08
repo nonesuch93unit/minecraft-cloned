@@ -4,13 +4,13 @@ using namespace std;
 
 // Lire l'image bmp
 // Les caract¨¦ristiques d'image(largeur,hauteur et data)
-struct Image
+class Image
 {
-    unsigned long sizeX;
-    unsigned long sizeY;
+public:
+    int sizeX;
+    int sizeY;
     char *data;
 };
-typedef struct Image Image;
 
 
 int ImageLoad(char *filename, Image *image) //leture un image. retour 1 si echec, return 0 si reussir
@@ -24,7 +24,7 @@ int ImageLoad(char *filename, Image *image) //leture un image. retour 1 si echec
 
     if ((file = fopen(filename, "rb")) == NULL)
     {
-        printf("File Not Found: %s\n", filename);
+        cout << "File Not Found: " << filename<< endl;
         return 0;
     }
 
@@ -34,18 +34,18 @@ int ImageLoad(char *filename, Image *image) //leture un image. retour 1 si echec
 	// Lire la largeur
     if ((i = fread(&image->sizeX, 4, 1, file)) != 1)
     {
-        printf("Error reading width from %s. \n", filename);
+        cout << "Error reading width from " << filename<< endl;
         return 0;
     }
-    printf("Width of %s: %lu\n", filename, image->sizeX);
+    cout << "Width of  " <<  filename << ":" <<  image->sizeX<< endl;
     
 	// Lire la hauteur
     if ((i = fread(&image->sizeY, 4, 1, file)) != 1)
     {
-        printf("Error reading height from %s. \n", filename);
+       cout << "Error reading height from " <<  filename<< endl;
         return 0;
     }
-    printf("Height of %s: %lu\n", filename, image->sizeY);
+    cout << "Height of  " << filename << ":"<< image->sizeY;
 
 	// Calculer la longueur(24bits ou 3bytes chaque pixel)
     size = image->sizeX * image->sizeY * 3;
@@ -53,24 +53,24 @@ int ImageLoad(char *filename, Image *image) //leture un image. retour 1 si echec
 
     if ((fread(&planes, 2, 1, file)) != 1)
     {
-        printf("Error reading planes from %s. \n", filename);
+        cout << "Error reading planes from" <<  filename << endl;
         return 0;
     }
 
     if (planes != 1)
     {
-        printf("Planes from %s is not 1: %u\n", filename, planes);
+        cout << "Planes from " <<  filename <<" is not 1: "  << planes<< endl;
         return 0;
     }
 
     if ((i = fread(&bpp, 2, 1, file)) != 1)
     {
-        printf("Error reading bpp from %s. \n", filename);
+        cout << "Error reading bpp from " << filename<< endl;
         return 0;
     }
     if (bpp != 24)
     {
-        printf("Bpp from %s is not 24: %u\n", filename, bpp);
+        cout <<"Bpp from "<< filename<<" is not 24: " << bpp<< endl;
         return 0;
     }
 
@@ -81,13 +81,13 @@ int ImageLoad(char *filename, Image *image) //leture un image. retour 1 si echec
     image->data = (char*) malloc (size);
     if (image->data == NULL)
     {
-        printf("Error allocating memory for color-corrected image data");
+        cout << "Error allocating memory for color-corrected image data" << endl;
         return 0;
     }
 
     if ((i = fread(image->data, size, 1, file)) != 1)
     {
-        printf("Error reading image data from %s. \n", filename);
+        cout << "Error reading image data from " << filename<< endl;
         return 0;
     }
 
