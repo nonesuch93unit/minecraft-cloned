@@ -2,12 +2,12 @@
 
 view::view()
 {
-	mypositionX = -8;
+	mypositionX = 0;
 	mypositionY = 0;
-	mypositionZ = -8;
-	objectX = 8;
+	mypositionZ = 8;
+	objectX = 0;
 	objectY = 0;
-	objectZ = 8;
+	objectZ = -8;
 	m_lastx = 0;
 	m_lasty = 0;
 }
