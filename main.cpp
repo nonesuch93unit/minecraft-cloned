@@ -7,7 +7,10 @@
 #include "BMPLoad.h"
 #include "View.h"
 #include "font.h"
+<<<<<<< HEAD
 #include "cube.h"
+=======
+>>>>>>> origin/master
 
 using namespace std;
 
@@ -86,6 +89,7 @@ void display()
  glRotatef(g_angle, 1.0, 0.0f, 0.0f);
   //glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     //glClear(GL_COLOR_BUFFER_BIT);
+<<<<<<< HEAD
  
 
  /* glBegin(GL_QUADS);
@@ -95,6 +99,15 @@ void display()
     glTexCoord2f(0.06f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
     glTexCoord2f(0.06f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
     glTexCoord2f(0.01f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
+=======
+ glBegin(GL_QUADS);
+	// Devant
+ glColor3f(1.0f, 1.0f, 1.0f); // 颜色
+    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
+    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
+>>>>>>> origin/master
 
 	// Gauche
     glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
@@ -107,6 +120,27 @@ void display()
     glTexCoord2f(0.12f, 0.01f); glVertex3f(1.0f,-1.0f, 1.0f);
     glTexCoord2f(0.12f, 0.06f); glVertex3f(1.0f,-1.0f,-1.0f);
     glTexCoord2f(0.07f, 0.06f); glVertex3f(1.0f, 1.0f,-1.0f);
+<<<<<<< HEAD
+=======
+
+	// Derrière
+    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f, 1.0f,-1.0f);
+    glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f,-1.0f,-1.0f);
+    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
+    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f, 1.0f,-1.0f);
+	
+	// Dessus
+    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
+    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f, 1.0f,-1.0f);
+
+	// Dessous
+    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f,-1.0f, 1.0f);
+    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f,-1.0f, 1.0f);
+    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
+    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
+>>>>>>> origin/master
 
 	// Derrière
     glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f, 1.0f,-1.0f);
@@ -139,8 +173,17 @@ void display()
 	glRasterPos2f(0,2); // 输出位置
 	f.glPrint("2");  // 输出文字到屏幕
 
+<<<<<<< HEAD
  
   glutSwapBuffers(); 
+=======
+  glColor3f(0.0f, 0.0f, 0.0f); // 颜色
+ glRasterPos2f(0,2); // 输出位置
+ f.glPrint("2");  // 输出文字到屏幕
+
+ 
+ glutSwapBuffers(); 
+>>>>>>> origin/master
 }
 
 
