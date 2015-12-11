@@ -6,6 +6,7 @@
 #include <math.h>
 #include "BMPLoad.h"
 #include "View.h"
+#include "font.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ GLuint texture;
 GLfloat g_angle = 0; 
 GLint width=0,height=0;
 view v;
+font f;
 
 // Lire bitmaps et le transformer en textures
 void LoadGLTextures()
@@ -43,7 +45,6 @@ void LoadGLTextures()
             0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
 }
 
-//===========================Partie OpenGL=========================
 // Initialiser les paramètres du OpenGL
 void init()
 {
@@ -55,6 +56,7 @@ void init()
     glDepthFunc(GL_LESS);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
+	f.BuildFont();
 }
 
 //------------------------------------
@@ -78,10 +80,14 @@ void display()
 //glRotatef(g_angle, 0.0, 1.0f, 0.0f);
 //g_angle += 1.0f;
 
+
   // Dessiner un cube
  glRotatef(g_angle, 1.0, 0.0f, 0.0f);
+  //glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    //glClear(GL_COLOR_BUFFER_BIT);
  glBegin(GL_QUADS);
 	// Devant
+ glColor3f(1.0f, 1.0f, 1.0f); // 颜色
     glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
     glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
     glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
@@ -119,7 +125,10 @@ void display()
 
  glEnd();
 
- 
+  glColor3f(0.0f, 0.0f, 0.0f); // 颜色
+ glRasterPos2f(0,2); // 输出位置
+ f.glPrint("2");  // 输出文字到屏幕
+
  
  glutSwapBuffers(); 
 }
