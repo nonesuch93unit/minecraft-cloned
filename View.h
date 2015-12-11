@@ -1,3 +1,6 @@
+#ifndef VIEW_H
+#define VIEW_H
+
 class view
 {
 public:
@@ -15,3 +18,4 @@ public:
 	float m_lasty;
 };
 
+#endif
