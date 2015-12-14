@@ -7,10 +7,8 @@
 #include "BMPLoad.h"
 #include "View.h"
 #include "font.h"
-<<<<<<< HEAD
 #include "cube.h"
-=======
->>>>>>> origin/master
+#include "world.h"
 
 using namespace std;
 
@@ -20,6 +18,7 @@ GLfloat g_angle = 0;
 GLint width=0,height=0;
 view v;
 font f;
+world w;
 
 // Lire bitmaps et le transformer en textures
 void LoadGLTextures()
@@ -31,7 +30,7 @@ void LoadGLTextures()
         exit(0);
     }    
 
-    if (!image1->ImageLoad("texture.bmp"))
+    if (!image1->ImageLoad("texture1.bmp"))
         exit(1);
 
 	// Créer des textures
@@ -61,6 +60,17 @@ void init()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
 	f.BuildFont();
+
+	w.addCube(0,0,0,0);
+	w.addCube(1,1,0,1);
+	w.addCube(1,0,0,2);
+	w.addCube(0,1,0,3);
+	w.addCube(0,2,0,4);
+	w.addCube(1,2,0,5);
+	w.addCube(0,-1,0,6);
+	w.addCube(1,-1,0,7);
+	
+	
 }
 
 //------------------------------------
@@ -74,40 +84,30 @@ void timer(int p)
 
 void display()
 {
- glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
- glLoadIdentity(); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	glLoadIdentity(); 
 
- gluLookAt(v.mypositionX,v.mypositionY,v.mypositionZ,
-	 v.mypositionX + v.objectX,v.mypositionY + v.objectY,v.mypositionZ + v.objectZ,
-	 0.0,1.0,0.0);  
-//glTranslatef(0.0f, 0.0f, 0.0f);
-//glRotatef(g_angle, 0.0, 1.0f, 0.0f);
-//g_angle += 1.0f;
+	gluLookAt(v.mypositionX,v.mypositionY,v.mypositionZ,
+			  v.mypositionX + v.objectX,v.mypositionY + v.objectY,v.mypositionZ + v.objectZ,
+			  0.0,1.0,0.0);  
+	//glTranslatef(0.0f, 0.0f, 0.0f);
+	//glRotatef(g_angle, 0.0, 1.0f, 0.0f);
+	//g_angle += 1.0f;
 
 
-  // Dessiner un cube
- glRotatef(g_angle, 1.0, 0.0f, 0.0f);
-  //glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	// Dessiner un cube
+	glRotatef(g_angle, 1.0, 0.0f, 0.0f);
+	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     //glClear(GL_COLOR_BUFFER_BIT);
-<<<<<<< HEAD
  
 
  /* glBegin(GL_QUADS);
 	// Devant
- glColor3f(1.0f, 1.0f, 1.0f); // 颜色
+	glColor3f(1.0f, 1.0f, 1.0f); // 颜色
     glTexCoord2f(0.01f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
     glTexCoord2f(0.06f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
     glTexCoord2f(0.06f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
     glTexCoord2f(0.01f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
-=======
- glBegin(GL_QUADS);
-	// Devant
- glColor3f(1.0f, 1.0f, 1.0f); // 颜色
-    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
->>>>>>> origin/master
 
 	// Gauche
     glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
@@ -120,27 +120,6 @@ void display()
     glTexCoord2f(0.12f, 0.01f); glVertex3f(1.0f,-1.0f, 1.0f);
     glTexCoord2f(0.12f, 0.06f); glVertex3f(1.0f,-1.0f,-1.0f);
     glTexCoord2f(0.07f, 0.06f); glVertex3f(1.0f, 1.0f,-1.0f);
-<<<<<<< HEAD
-=======
-
-	// Derrière
-    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f, 1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f, 1.0f,-1.0f);
-	
-	// Dessus
-    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f, 1.0f,-1.0f);
-
-	// Dessous
-    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
->>>>>>> origin/master
 
 	// Derrière
     glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f, 1.0f,-1.0f);
@@ -161,29 +140,16 @@ void display()
     glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
 
 	glEnd();*/
-	cube c(0,0,0,0);
-	cube c1(0,1,0,0);
-	cube c2(1,1,0,1);
-	c.afficheCube();
-	c1.afficheCube();
-	c2.afficheCube();
-
+	
+	
+	w.afficheworld();
 
 	glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	glRasterPos2f(0,2); // 输出位置
 	f.glPrint("2");  // 输出文字到屏幕
 
-<<<<<<< HEAD
  
   glutSwapBuffers(); 
-=======
-  glColor3f(0.0f, 0.0f, 0.0f); // 颜色
- glRasterPos2f(0,2); // 输出位置
- f.glPrint("2");  // 输出文字到屏幕
-
- 
- glutSwapBuffers(); 
->>>>>>> origin/master
 }
 
 

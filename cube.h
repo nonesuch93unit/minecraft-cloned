@@ -5,8 +5,12 @@
 
 #define TERRE 0
 #define SABLE 1
-#define BOIS 2
+#define WOOD 2
 #define PIERRE 3
+#define WATER 4
+#define BRICK 5
+#define SNOW 6
+#define MAGMA 7
 
 class cube
 {
@@ -20,6 +24,9 @@ public:
 	~cube(){}
 	cube(float x, float y, float z, int type);
 	void afficheCube();
+	float getpositionX(){return positionX;}
+	float getpositionY(){return positionY;}
+	float getpositionZ(){return positionZ;}
 
 };
 

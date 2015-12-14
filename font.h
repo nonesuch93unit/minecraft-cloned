@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 #ifndef FONT_H
 #define FONT_H
 
-=======
->>>>>>> origin/master
 #include <GL/glut.h>
 #include<Windows.h>
 
@@ -19,7 +16,4 @@ public:
 
 };
 
-<<<<<<< HEAD
 #endif
-=======
->>>>>>> origin/master
