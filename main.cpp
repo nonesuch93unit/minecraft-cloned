@@ -60,17 +60,7 @@ void init()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
 	f.BuildFont();
-
-	w.addCube(0,0,0,0);
-	w.addCube(1,1,0,1);
-	w.addCube(1,0,0,2);
-	w.addCube(0,1,0,3);
-	w.addCube(0,2,0,4);
-	w.addCube(1,2,0,5);
-	w.addCube(0,-1,0,6);
-	w.addCube(1,-1,0,7);
-	
-	
+	w.generation();
 }
 
 //------------------------------------
