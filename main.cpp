@@ -1,4 +1,8 @@
-﻿#include <iostream>
+﻿#pragma comment(lib, "WINMM.LIB")
+
+#include <windows.h>
+#include <mmsystem.h>
+#include <iostream>
 #include <GL/glut.h>
 #include <string>
 #include <stdio.h>
@@ -9,6 +13,8 @@
 #include "font.h"
 #include "cube.h"
 #include "world.h"
+
+
 
 using namespace std;
 
@@ -61,6 +67,8 @@ void init()
     glEnable(GL_DEPTH_TEST);
 	f.BuildFont();
 	w.generation();
+	
+
 }
 
 //------------------------------------
@@ -138,6 +146,7 @@ void display()
 	glRasterPos2f(0,2); // 输出位置
 	f.glPrint("2");  // 输出文字到屏幕
 
+	
  
   glutSwapBuffers(); 
 }
@@ -166,18 +175,22 @@ void keyboard(unsigned char key, int x, int y)
 		case 'w': 
 			v.mypositionX += 0.01 * v.objectX;
 			v.mypositionZ += 0.01 * v.objectZ;
+			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 's': 
 			v.mypositionX += 0.01 * -v.objectX;
 			v.mypositionZ += 0.01 * -v.objectZ;
+			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 'a': 
 			v.mypositionX += 0.01 * v.objectZ;
 			v.mypositionZ += 0.01 * -v.objectX;
+			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 'd': 
 			v.mypositionX += 0.01 * -v.objectZ;
 			v.mypositionZ += 0.01 * v.objectX;
+			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
         case 'q': 
 			v.mypositionY += 0.1 ;
