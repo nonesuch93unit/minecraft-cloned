@@ -14,7 +14,7 @@
 #define MAGMA 7
 #define GRASSLAND 8
 
-class cube
+class Cube
 {
 private:
 	float positionX,positionY,positionZ;
@@ -22,9 +22,9 @@ private:
 	int type;
 
 public:
-	cube(){}
-	~cube(){}
-	cube(float x, float y, float z, int type);
+	Cube(){}
+	~Cube(){}
+	Cube(float x, float y, float z, int type);
 	void afficheCube();
 	float getpositionX(){return positionX;}
 	float getpositionY(){return positionY;}

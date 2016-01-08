@@ -1,6 +1,6 @@
 #include "font.h"
 
-GLvoid font::BuildFont(GLvoid)
+GLvoid Font::BuildFont(GLvoid)
 {
 	HFONT font;		
 	HFONT oldfont;
@@ -27,7 +27,7 @@ GLvoid font::BuildFont(GLvoid)
 
 }
 
-void font::glPrint(const char *pstr)
+void Font::glPrint(const char *pstr)
 {
 	glPushAttrib(GL_LIST_BIT);	
 	glListBase(base - 0);		
@@ -36,7 +36,7 @@ void font::glPrint(const char *pstr)
 
 }
 
-GLvoid font::KillFont(GLvoid)
+GLvoid Font::KillFont(GLvoid)
 {
 	glDeleteLists(base, 256); 
 }

@@ -4,7 +4,7 @@
 #include <GL/glut.h>
 #include<Windows.h>
 
-class font
+class Font
 {
 private:
 	GLuint base;

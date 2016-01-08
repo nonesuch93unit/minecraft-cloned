@@ -1,17 +1,39 @@
 #include"View.h"
 
-view::view()
+View::View()
 {
 	mypositionX = 0;
 	mypositionY = 8;
 	mypositionZ = 8;
 	objectX = 0;
-	objectY = -8;
-	objectZ = -8;
+	objectY = 0;
+	objectZ = -1;
+	speedx = 0;
+	speedy = 0;
+	speedz = 0;
+	accelerx = 0;
+	accelery = -0.01;
+	accelerz = 0;
 	m_lastx = 0;
 	m_lasty = 0;
 }
 
-view::~view()
+View::~View()
 {
+}
+
+void View::movement()
+{
+	if(speedx != 0 || speedz != 0)
+	{
+		accelerx = -0.1 * speedx;
+		accelerz = -0.1 * speedz;
+	}
+	mypositionX += speedx;
+	mypositionY += speedy;
+	mypositionZ += speedz;
+	speedx += accelerx;
+	speedy += accelery;
+	speedz += accelerz;
+	
 }

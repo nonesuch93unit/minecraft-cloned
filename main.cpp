@@ -14,17 +14,14 @@
 #include "cube.h"
 #include "world.h"
 
-
-
 using namespace std;
 
 // La texture que on va utiliser
 GLuint texture;
 GLfloat g_angle = 0; 
 GLint width=0,height=0;
-view v;
-font f;
-world w;
+Font fond;
+World world;
 
 // Lire bitmaps et le transformer en textures
 void LoadGLTextures()
@@ -65,8 +62,8 @@ void init()
     glDepthFunc(GL_LESS);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
-	f.BuildFont();
-	w.generation();
+	fond.BuildFont();
+	world.generation();
 	
 
 }
@@ -84,15 +81,12 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glLoadIdentity(); 
-
-	gluLookAt(v.mypositionX,v.mypositionY,v.mypositionZ,
-			  v.mypositionX + v.objectX,v.mypositionY + v.objectY,v.mypositionZ + v.objectZ,
+	gluLookAt(world.viewer.mypositionX,world.viewer.mypositionY,world.viewer.mypositionZ,
+			  world.viewer.mypositionX + world.viewer.objectX,world.viewer.mypositionY + world.viewer.objectY,world.viewer.mypositionZ + world.viewer.objectZ,
 			  0.0,1.0,0.0);  
 	//glTranslatef(0.0f, 0.0f, 0.0f);
 	//glRotatef(g_angle, 0.0, 1.0f, 0.0f);
 	//g_angle += 1.0f;
-
-
 	// Dessiner un cube
 	glRotatef(g_angle, 1.0, 0.0f, 0.0f);
 	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
@@ -138,17 +132,34 @@ void display()
     glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
 
 	glEnd();*/
-	
-	
-	w.afficheworld();
+	world.viewerMovement();
+	world.existCube(0,0,0);
+	world.afficheworld();
 
-	glColor3f(0.0f, 0.0f, 0.0f); // 颜色
-	glRasterPos2f(0,2); // 输出位置
-	f.glPrint("2");  // 输出文字到屏幕
 
-	
+	// Save your projection matrix
+	//glMatrixMode(GL_PROJECTION);
+	//glPushMatrix();
+
+	// Switch to orthographic projection
+	//glLoadIdentity();
+	//glOrtho(0,0,0,width,height,0);
+
+	// Back to the modelview matrix mode, so that you can translate/scale your text
+	//glMatrixMode(GL_MODELVIEW);
+
+	// Render your 2D text
+	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
+	//glRasterPos2f(0,2); // 输出位置
+	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");  // 输出文字到屏幕
+
+	// get back the old prespective projection matrix
+	//glMatrixMode(GL_PROJECTION);
+	//glPopMatrix();
+	//glMatrixMode(GL_MODELVIEW);
+
  
-  glutSwapBuffers(); 
+	glutSwapBuffers(); 
 }
 
 
@@ -173,30 +184,36 @@ void keyboard(unsigned char key, int x, int y)
     switch (key)
     {
 		case 'w': 
-			v.mypositionX += 0.01 * v.objectX;
-			v.mypositionZ += 0.01 * v.objectZ;
-			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
+			world.viewer.speedx = 0.2 * world.viewer.objectX;
+			world.viewer.speedz = 0.2 * world.viewer.objectZ;
+		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 's': 
-			v.mypositionX += 0.01 * -v.objectX;
-			v.mypositionZ += 0.01 * -v.objectZ;
-			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
+			world.viewer.speedx = -0.2 * world.viewer.objectX;
+			world.viewer.speedz = -0.2 * world.viewer.objectZ;
+		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 'a': 
-			v.mypositionX += 0.01 * v.objectZ;
-			v.mypositionZ += 0.01 * -v.objectX;
-			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
+			world.viewer.speedx = 0.2 * world.viewer.objectZ;
+			world.viewer.speedz = -0.2 * world.viewer.objectX;
+			
+		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
 		case 'd': 
-			v.mypositionX += 0.01 * -v.objectZ;
-			v.mypositionZ += 0.01 * v.objectX;
-			PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
+			world.viewer.speedx = -0.2 * world.viewer.objectZ;
+			world.viewer.speedz = 0.2 * world.viewer.objectX;
+
+		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
             break;
+		case ' ':
+			if(world.viewer.speedy > -0.1 && world.viewer.speedy < 0.1)
+				world.viewer.speedy = 0.2;
+			break;
         case 'q': 
-			v.mypositionY += 0.1 ;
+			world.viewer.mypositionY += 0.1 ;
             break;
         case 'e': 
-			v.mypositionY -= 0.1 ;
+			world.viewer.mypositionY -= 0.1 ;
             break;
 		case 27: 
             exit(0);
@@ -208,6 +225,8 @@ void keyboard(unsigned char key, int x, int y)
 // Cliquer sur la souris
 void MouseEvent(int button, int state, int x, int y)
 {
+	if(button == 2)
+		world.vieweraddCube(1);
 }
 
 //-------------------------------------
@@ -215,26 +234,26 @@ void MouseEvent(int button, int state, int x, int y)
 void MotionMove(int x,int y)
 {
 	//cout << x << " " << y << endl;
-	if(x - v.m_lastx < 0 || x <= 5)
+	if(x - world.viewer.m_lastx < 0 || x <= 5)
 	{
-		v.objectX = cos(0.01) * v.objectX + sin(0.01) * v.objectZ;
-		v.objectZ = -sin(0.01) * v.objectX + cos(0.01) * v.objectZ;
+		world.viewer.objectX = cos(0.01) * world.viewer.objectX + sin(0.01) * world.viewer.objectZ;
+		world.viewer.objectZ = -sin(0.01) * world.viewer.objectX + cos(0.01) * world.viewer.objectZ;
 	}
-	if(x - v.m_lastx > 0 || x >= width-5)
+	if(x - world.viewer.m_lastx > 0 || x >= width-5)
 	{
-		v.objectX = cos(-0.01) * v.objectX + sin(-0.01) * v.objectZ;
-		v.objectZ = -sin(-0.01) * v.objectX + cos(-0.01) * v.objectZ;
+		world.viewer.objectX = cos(-0.01) * world.viewer.objectX + sin(-0.01) * world.viewer.objectZ;
+		world.viewer.objectZ = -sin(-0.01) * world.viewer.objectX + cos(-0.01) * world.viewer.objectZ;
 	}
-	if(y - v.m_lasty > 0 || y >= height-5)
+	if(y - world.viewer.m_lasty > 0 || y >= height-5)
 	{
-		v.objectY -= 0.05;
+		world.viewer.objectY -= 0.05;
 	}
-	if(y - v.m_lasty < 0 || y <= 5)
+	if(y - world.viewer.m_lasty < 0 || y <= 5)
 	{
-		v.objectY += 0.05;
+		world.viewer.objectY += 0.05;
 	}
-	v.m_lastx = x;
-	v.m_lasty = y;
+	world.viewer.m_lastx = x;
+	world.viewer.m_lasty = y;
 }
 
 void LeaveWindow(int state)
@@ -242,23 +261,23 @@ void LeaveWindow(int state)
 	if(state == GLUT_LEFT)
 	{
 		cout << "leave"<<endl;
-		if(v.m_lastx <= 5)
+		if(world.viewer.m_lastx <= 5)
 		{
-			v.objectX = cos(0.01) * v.objectX + sin(0.01) * v.objectZ;
-			v.objectZ = -sin(0.01) * v.objectX + cos(0.01) * v.objectZ;
+			world.viewer.objectX = cos(0.01) * world.viewer.objectX + sin(0.01) * world.viewer.objectZ;
+			world.viewer.objectZ = -sin(0.01) * world.viewer.objectX + cos(0.01) * world.viewer.objectZ;
 		}
-		if(v.m_lastx >= width-5)
+		if(world.viewer.m_lastx >= width-5)
 		{
-			v.objectX = cos(-0.01) * v.objectX + sin(-0.01) * v.objectZ;
-			v.objectZ = -sin(-0.01) * v.objectX + cos(-0.01) * v.objectZ;
+			world.viewer.objectX = cos(-0.01) * world.viewer.objectX + sin(-0.01) * world.viewer.objectZ;
+			world.viewer.objectZ = -sin(-0.01) * world.viewer.objectX + cos(-0.01) * world.viewer.objectZ;
 		}
-		if(v.m_lasty >= height-5)
+		if(world.viewer.m_lasty >= height-5)
 		{
-			v.objectY -= 0.05;
+			world.viewer.objectY -= 0.05;
 		}
-		if(v.m_lasty <= 5)
+		if(world.viewer.m_lasty <= 5)
 		{
-			v.objectY += 0.05;
+			world.viewer.objectY += 0.05;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 #include <cstring>
 using namespace std;
 
-cube::cube(float x, float y, float z, int t)
+Cube::Cube(float x, float y, float z, int t)
 {
 	positionX = x;
 	positionY = y;
@@ -85,7 +85,7 @@ cube::cube(float x, float y, float z, int t)
 	}
 }
 
-void cube::afficheCube()
+void Cube::afficheCube()
 {
 	glBegin(GL_QUADS);
 		// Devant

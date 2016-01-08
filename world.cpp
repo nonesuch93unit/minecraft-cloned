@@ -1,45 +1,51 @@
 #include "world.h"
 
 
-bool world::addCube(float x, float y, float z, int t)
+bool World::addCube(float x, float y, float z, int t)
 {
-	vector<cube>::iterator i = cubes.begin();
-	for(;i<cubes.end(); i++)
+	(x < 0 && x != (int)x) ? x = (int)x - 1 : x = (int)x;
+	(y < 0 && y != (int)y) ? y = (int)y - 1 : y = (int)y;
+	(z < 0 && z != (int)z) ? z = (int)z - 1 : z = (int)z;
+
+	if(existCube(x,y,z))
 	{
-		if(i->getpositionX() == x && i->getpositionY() == y && i->getpositionZ() == z)
-		{
-			cout << "the position has already existed a cube!" << endl;
-			return false;
-		}
+		cout << "the position has already existed a cube!" << endl;
+		return false;
 	}
-	cube c(x, y, z, t);
+	Cube c(x, y, z, t);
 	cubes.push_back(c);
 	cout << "created a cube successfully! cube: (" << x << "," << y << "," <<z << ")" <<endl;
 	return true;
 }
 
-void world::addCube2(float x, float y, float z, int t)
+void World::addCubereplace(float x, float y, float z, int t)
 {
-	vector<cube>::iterator i = cubes.begin();
+	(x < 0 && x != (int)x) ? x = (int)x - 1 : x = (int)x;
+	(y < 0 && y != (int)y) ? y = (int)y - 1 : y = (int)y;
+	(z < 0 && z != (int)z) ? z = (int)z - 1 : z = (int)z;
+	vector<Cube>::iterator i = cubes.begin();
 	for(;i<cubes.end(); i++)
 	{
 		if(i->getpositionX() == x && i->getpositionY() == y && i->getpositionZ() == z)
 		{
 			//cout << "replaced!" << endl;
 			cubes.erase(i);
-			cube c(x, y, z, t);
+			Cube c(x, y, z, t);
 			cubes.push_back(c);
 			return;
 		}
 	}
-	cube c(x, y, z, t);
+	Cube c(x, y, z, t);
 	cubes.push_back(c);
 	//cout << "created a cube successfully! cube: (" << x << "," << y << "," <<z << ")" <<endl;
 }
 
-bool world::deleteCube(float x, float y, float z)
+bool World::deleteCube(float x, float y, float z)
 {
-	vector<cube>::iterator i = cubes.begin();
+	(x < 0 && x != (int)x) ? x = (int)x - 1 : x = (int)x;
+	(y < 0 && y != (int)y) ? y = (int)y - 1 : y = (int)y;
+	(z < 0 && z != (int)z) ? z = (int)z - 1 : z = (int)z;
+	vector<Cube>::iterator i = cubes.begin();
 	for(;i<cubes.end(); i++)
 	{
 		if(i->getpositionX() == x && i->getpositionY() == y && i->getpositionZ() == z)
@@ -53,7 +59,7 @@ bool world::deleteCube(float x, float y, float z)
 	return false;
 }
 
-void world::generation()
+void World::generation()
 {
 	for(int j = -3; j<0;j++)
 	{
@@ -61,7 +67,7 @@ void world::generation()
 		{
 			for(int k = -10; k < 10; k++)
 			{
-				addCube2(i,j,k,WATER);
+				addCubereplace(i,j,k,WATER);
 			}
 		}
 	}
@@ -72,7 +78,7 @@ void world::generation()
 			for(int k = -5; k < 5; k++)
 			{
 				if(i+k+2*j < 3 && 2*i+2*j-k < 7 && -i+2*j+k < 6 && -3*i+2*j- k < 6)
-					addCube2(i,j,k,SAND);
+					addCubereplace(i,j,k,SAND);
 			}
 		}
 	}
@@ -81,11 +87,112 @@ void world::generation()
 
 }
 
-void world::afficheworld()
+void World::afficheworld()
 {
-	vector<cube>::iterator i = cubes.begin();
+	vector<Cube>::iterator i = cubes.begin();
 	for(;i<cubes.end(); i++)
 	{
 		i->afficheCube();
 	}
+}
+
+bool World::existCube(float x, float y, float z)
+{
+	(x < 0 && x != (int)x) ? x = (int)x - 1 : x = (int)x;
+	(y < 0 && y != (int)y) ? y = (int)y - 1 : y = (int)y;
+	(z < 0 && z != (int)z) ? z = (int)z - 1 : z = (int)z;
+	vector<Cube>::iterator i = cubes.begin();
+	for(;i<cubes.end(); i++)
+	{
+		if(i->getpositionX() == x && i->getpositionY() == y && i->getpositionZ() == z)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool World::collision()
+{
+	if(existCube(viewer.mypositionX, viewer.mypositionY-2, viewer.mypositionZ) && viewer.speedy < 0)
+	{
+		viewer.speedy = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX, viewer.mypositionY+1, viewer.mypositionZ) && viewer.speedy > 0)
+	{
+		viewer.speedy = 0;
+		return true;
+	}
+	//
+	if(existCube(viewer.mypositionX+1, viewer.mypositionY-1, viewer.mypositionZ) && viewer.speedx > 0)
+	{
+		viewer.speedx = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX-1, viewer.mypositionY-1, viewer.mypositionZ) && viewer.speedx < 0)
+	{
+		viewer.speedx = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX, viewer.mypositionY-1, viewer.mypositionZ+1) && viewer.speedz > 0)
+	{
+		viewer.speedz = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX, viewer.mypositionY-1, viewer.mypositionZ-1) && viewer.speedz < 0)
+	{
+		viewer.speedz = 0;
+		return true;
+	}
+	//
+	if(existCube(viewer.mypositionX+1, viewer.mypositionY, viewer.mypositionZ) && viewer.speedx > 0)
+	{
+		viewer.speedx = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX-1, viewer.mypositionY, viewer.mypositionZ) && viewer.speedx < 0)
+	{
+		viewer.speedx = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX, viewer.mypositionY, viewer.mypositionZ+1) && viewer.speedz > 0)
+	{
+		viewer.speedz = 0;
+		return true;
+	}
+	if(existCube(viewer.mypositionX, viewer.mypositionY, viewer.mypositionZ-1) && viewer.speedz < 0)
+	{
+		viewer.speedz = 0;
+		return true;
+	}
+	return false;
+}
+
+void World::viewerMovement()
+{
+	if(!collision())
+	{
+		viewer.movement();
+	}
+}
+
+bool World::vieweraddCube(int t)
+{
+	float a, b, c;
+	for(int i = 2; i <= 5; i++)
+	{
+		a = viewer.mypositionX + i * viewer.objectX;
+		b = viewer.mypositionY + i * viewer.objectY;
+		c = viewer.mypositionZ + i * viewer.objectZ;
+		if(existCube(a,b,c))
+		{
+			a = viewer.mypositionX + (i-0.5) * viewer.objectX;
+			b = viewer.mypositionY + (i-0.5) * viewer.objectY;
+			c = viewer.mypositionZ + (i-0.5) * viewer.objectZ;
+			addCube(a,b,c,1);
+			return true;
+		}
+	}
+	return false;
 }

@@ -1,11 +1,12 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-class view
+class View
 {
 public:
-	view();
-	~view();
+	View();
+	~View();
+	void movement();
 
 public:
 	float mypositionX;
@@ -14,6 +15,12 @@ public:
 	float objectX;
 	float objectY;
 	float objectZ;
+	float speedx;
+	float speedy;
+	float speedz;
+	float accelerx;
+	float accelery;
+	float accelerz;
 	float m_lastx;
 	float m_lasty;
 };
