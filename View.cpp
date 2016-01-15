@@ -24,8 +24,8 @@ void View::movement()
 {
 	if(speedx != 0 || speedz != 0)
 	{
-		accelerx = -0.1 * speedx;
-		accelerz = -0.1 * speedz;
+		accelerx = -0.5 * speedx;
+		accelerz = -0.5 * speedz;
 	}
 	mypositionX += speedx;
 	mypositionY += speedy;

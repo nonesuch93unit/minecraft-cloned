@@ -22,10 +22,16 @@ public:
 	bool existCube(float x, float y, float z);
 	bool collision();
 	void viewerMovement();
-	bool vieweraddCube(int t);
+	void vieweraddCube(int t);
+	void viewerdeletecube();
+	void viewerchoosecube();
+
 
 private:
 	vector<Cube> cubes;
+	int chosenx; int choseny; int chosenz;
+	int frontx; int fronty; int frontz;
+	int chosen;
 
 public:
 	View viewer;

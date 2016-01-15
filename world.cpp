@@ -177,7 +177,7 @@ void World::viewerMovement()
 	}
 }
 
-bool World::vieweraddCube(int t)
+void World::vieweraddCube(int t)
 {
 	float a, b, c;
 	for(int i = 2; i <= 5; i++)
@@ -191,8 +191,49 @@ bool World::vieweraddCube(int t)
 			b = viewer.mypositionY + (i-0.5) * viewer.objectY;
 			c = viewer.mypositionZ + (i-0.5) * viewer.objectZ;
 			addCube(a,b,c,1);
-			return true;
+			return;
 		}
 	}
-	return false;
+}
+
+void World::viewerdeletecube()
+{
+	if(chosen)
+		deleteCube(chosenx,choseny,chosenz);
+}
+
+void World::viewerchoosecube()
+{
+	vector<Cube>::iterator i = cubes.begin();
+	for(;i<cubes.end(); i++)
+	{
+		i->notchoosecube();
+		chosen = 0;
+	}
+
+	float x, y, z;
+	for(int j = 2; j <= 5; j++)
+	{
+		x = viewer.mypositionX + j * viewer.objectX;
+		y = viewer.mypositionY + j * viewer.objectY;
+		z = viewer.mypositionZ + j * viewer.objectZ;
+
+		(x < 0 && x != (int)x) ? x = (int)x - 1 : x = (int)x;
+		(y < 0 && y != (int)y) ? y = (int)y - 1 : y = (int)y;
+		(z < 0 && z != (int)z) ? z = (int)z - 1 : z = (int)z;
+
+		vector<Cube>::iterator i = cubes.begin();
+		for(;i<cubes.end(); i++)
+		{
+			if(i->getpositionX() == x && i->getpositionY() == y && i->getpositionZ() == z)
+			{
+				i->choosecube();
+				chosenx = x; 
+				choseny = y;
+				chosenz = z;
+				chosen = 1;
+				return;
+			}
+		}
+	}
 }

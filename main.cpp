@@ -15,6 +15,7 @@
 #include "world.h"
 #include "keyboard.h"
 #include "mouse.h"
+#include "GUI.h"
 
 using namespace std;
 
@@ -62,7 +63,7 @@ void init()
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(800, 600);
     glutCreateWindow("Minecraft");
-
+	
     glEnable(GL_TEXTURE_2D);
 	// Définir de la couleur d'effacement du framebuffer en blanc                  
     glDepthFunc(GL_LESS);
@@ -71,12 +72,10 @@ void init()
 	glutSetCursor(GLUT_CURSOR_NONE); 
 	glutIgnoreKeyRepeat(1);
 
-	
-
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glClearDepth(1.0);   
 
-	 LoadGLTextures(); // Lire une texture
+	LoadGLTextures(); // Lire une texture
 	fond.BuildFont();
 	world.generation();
 	
@@ -90,9 +89,9 @@ void timer(int p)
     glutTimerFunc(20, timer, 0);
 }
 
-
 void display()
 {
+	
 	keyboard.keyboardmovement(world);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -108,7 +107,6 @@ void display()
 	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     //glClear(GL_COLOR_BUFFER_BIT);
  
-
  /* glBegin(GL_QUADS);
 	// Devant
 	glColor3f(1.0f, 1.0f, 1.0f); // 颜色
@@ -150,19 +148,20 @@ void display()
 	glEnd();*/
 	world.viewerMovement();
 	world.afficheworld();
-
-
+	world.viewerchoosecube();
 
 	// Render your 2D text
 	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	//glRasterPos2f(0,2); // 输出位置
 	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");  // 输出文字到屏幕
-
-
  
+	//cout << world.viewer.mypositionX << " " << world.viewer.mypositionY << " " << world.viewer.mypositionZ << endl;
+
+	//2d GUI
+	
+
 	glutSwapBuffers(); 
 }
-
 
 void reshape(int w, int h)
 {
@@ -194,7 +193,10 @@ void keyup(unsigned char key, int x, int y)
 // Cliquer sur la souris
 void MouseEvent(int button, int state, int x, int y)
 {
-	mouse.rightclick(world,button);
+	if(button == 0)
+		mouse.leftclick(world,button);
+	if(button == 2)
+		mouse.rightclick(world,button);
 }
 
 //-------------------------------------

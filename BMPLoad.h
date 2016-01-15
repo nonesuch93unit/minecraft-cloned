@@ -39,7 +39,7 @@ public:
 			cout << "Error reading width from " << filename<< endl;
 			return 0;
 		}
-		cout << "Width of  " <<  filename << ":" <<  sizeX<< endl;
+		//cout << "Width of  " <<  filename << ":" <<  sizeX<< endl;
     
 		// Lire la hauteur
 		if ((i = fread(&sizeY, 4, 1, file)) != 1)
@@ -47,7 +47,7 @@ public:
 		   cout << "Error reading height from " <<  filename<< endl;
 			return 0;
 		}
-		cout << "Height of  " << filename << ":"<< sizeY;
+		//cout << "Height of  " << filename << ":"<< sizeY;
 
 		// Calculer la longueur(24bits ou 3bytes chaque pixel)
 		size = sizeX * sizeY * 3;

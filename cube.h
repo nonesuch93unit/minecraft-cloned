@@ -20,6 +20,7 @@ private:
 	float positionX,positionY,positionZ;
 	float textureX[6], textureY[6];
 	int type;
+	int chosen;
 
 public:
 	Cube(){}
@@ -29,7 +30,8 @@ public:
 	float getpositionX(){return positionX;}
 	float getpositionY(){return positionY;}
 	float getpositionZ(){return positionZ;}
-
+	void choosecube(){chosen = 1;}
+	void notchoosecube(){chosen = 0;}
 };
 
 #endif
