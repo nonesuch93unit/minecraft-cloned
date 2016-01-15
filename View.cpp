@@ -14,8 +14,6 @@ View::View()
 	accelerx = 0;
 	accelery = -0.01;
 	accelerz = 0;
-	m_lastx = 0;
-	m_lasty = 0;
 }
 
 View::~View()

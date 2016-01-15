@@ -13,6 +13,8 @@
 #include "font.h"
 #include "cube.h"
 #include "world.h"
+#include "keyboard.h"
+#include "mouse.h"
 
 using namespace std;
 
@@ -22,6 +24,8 @@ GLfloat g_angle = 0;
 GLint width=0,height=0;
 Font fond;
 World world;
+Keyboard keyboard;
+Mouse mouse;
 
 // Lire bitmaps et le transformer en textures
 void LoadGLTextures()
@@ -54,18 +58,28 @@ void LoadGLTextures()
 // Initialiser les paramètres du OpenGL
 void init()
 {
-    LoadGLTextures(); // Lire une texture
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowPosition(50, 50);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Minecraft");
+
     glEnable(GL_TEXTURE_2D);
-	// Définir de la couleur d'effacement du framebuffer en blanc
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
-    glClearDepth(1.0);                     
+	// Définir de la couleur d'effacement du framebuffer en blanc                  
     glDepthFunc(GL_LESS);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
+	glutSetCursor(GLUT_CURSOR_NONE); 
+	glutIgnoreKeyRepeat(1);
+
+	
+
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
+    glClearDepth(1.0);   
+
+	 LoadGLTextures(); // Lire une texture
 	fond.BuildFont();
 	world.generation();
 	
-
 }
 
 //------------------------------------
@@ -79,6 +93,8 @@ void timer(int p)
 
 void display()
 {
+	keyboard.keyboardmovement(world);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glLoadIdentity(); 
 	gluLookAt(world.viewer.mypositionX,world.viewer.mypositionY,world.viewer.mypositionZ,
@@ -133,30 +149,15 @@ void display()
 
 	glEnd();*/
 	world.viewerMovement();
-	world.existCube(0,0,0);
 	world.afficheworld();
 
 
-	// Save your projection matrix
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-
-	// Switch to orthographic projection
-	//glLoadIdentity();
-	//glOrtho(0,0,0,width,height,0);
-
-	// Back to the modelview matrix mode, so that you can translate/scale your text
-	//glMatrixMode(GL_MODELVIEW);
 
 	// Render your 2D text
 	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	//glRasterPos2f(0,2); // 输出位置
 	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");  // 输出文字到屏幕
 
-	// get back the old prespective projection matrix
-	//glMatrixMode(GL_PROJECTION);
-	//glPopMatrix();
-	//glMatrixMode(GL_MODELVIEW);
 
  
 	glutSwapBuffers(); 
@@ -179,124 +180,42 @@ void reshape(int w, int h)
 
 //-----------------------------------
 //Clavier 
-void keyboard(unsigned char key, int x, int y)
+void keydown(unsigned char key, int x, int y)
 {
-    switch (key)
-    {
-		case 'w': 
-			world.viewer.speedx = 0.2 * world.viewer.objectX;
-			world.viewer.speedz = 0.2 * world.viewer.objectZ;
-		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
-            break;
-		case 's': 
-			world.viewer.speedx = -0.2 * world.viewer.objectX;
-			world.viewer.speedz = -0.2 * world.viewer.objectZ;
-		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
-            break;
-		case 'a': 
-			world.viewer.speedx = 0.2 * world.viewer.objectZ;
-			world.viewer.speedz = -0.2 * world.viewer.objectX;
-			
-		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
-            break;
-		case 'd': 
-			world.viewer.speedx = -0.2 * world.viewer.objectZ;
-			world.viewer.speedz = 0.2 * world.viewer.objectX;
+	keyboard.setkeydown(key);
+}
 
-		//	PlaySoundW(TEXT("65734.wav"), NULL, SND_SYNC | SND_FILENAME);
-            break;
-		case ' ':
-			if(world.viewer.speedy > -0.1 && world.viewer.speedy < 0.1)
-				world.viewer.speedy = 0.2;
-			break;
-        case 'q': 
-			world.viewer.mypositionY += 0.1 ;
-            break;
-        case 'e': 
-			world.viewer.mypositionY -= 0.1 ;
-            break;
-		case 27: 
-            exit(0);
-            break;
-    }    
+void keyup(unsigned char key, int x, int y)
+{
+	keyboard.setkeyup(key);
 }
 
 //------------------------------------
 // Cliquer sur la souris
 void MouseEvent(int button, int state, int x, int y)
 {
-	if(button == 2)
-		world.vieweraddCube(1);
+	mouse.rightclick(world,button);
 }
 
 //-------------------------------------
 // Bouger la souris
 void MotionMove(int x,int y)
 {
-	//cout << x << " " << y << endl;
-	if(x - world.viewer.m_lastx < 0 || x <= 5)
-	{
-		world.viewer.objectX = cos(0.01) * world.viewer.objectX + sin(0.01) * world.viewer.objectZ;
-		world.viewer.objectZ = -sin(0.01) * world.viewer.objectX + cos(0.01) * world.viewer.objectZ;
-	}
-	if(x - world.viewer.m_lastx > 0 || x >= width-5)
-	{
-		world.viewer.objectX = cos(-0.01) * world.viewer.objectX + sin(-0.01) * world.viewer.objectZ;
-		world.viewer.objectZ = -sin(-0.01) * world.viewer.objectX + cos(-0.01) * world.viewer.objectZ;
-	}
-	if(y - world.viewer.m_lasty > 0 || y >= height-5)
-	{
-		world.viewer.objectY -= 0.05;
-	}
-	if(y - world.viewer.m_lasty < 0 || y <= 5)
-	{
-		world.viewer.objectY += 0.05;
-	}
-	world.viewer.m_lastx = x;
-	world.viewer.m_lasty = y;
-}
-
-void LeaveWindow(int state)
-{
-	if(state == GLUT_LEFT)
-	{
-		cout << "leave"<<endl;
-		if(world.viewer.m_lastx <= 5)
-		{
-			world.viewer.objectX = cos(0.01) * world.viewer.objectX + sin(0.01) * world.viewer.objectZ;
-			world.viewer.objectZ = -sin(0.01) * world.viewer.objectX + cos(0.01) * world.viewer.objectZ;
-		}
-		if(world.viewer.m_lastx >= width-5)
-		{
-			world.viewer.objectX = cos(-0.01) * world.viewer.objectX + sin(-0.01) * world.viewer.objectZ;
-			world.viewer.objectZ = -sin(-0.01) * world.viewer.objectX + cos(-0.01) * world.viewer.objectZ;
-		}
-		if(world.viewer.m_lasty >= height-5)
-		{
-			world.viewer.objectY -= 0.05;
-		}
-		if(world.viewer.m_lasty <= 5)
-		{
-			world.viewer.objectY += 0.05;
-		}
-	}
+	mouse.mousemove(world,x,y,width,height);
 }
 
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("Minecraft");
+
     init();
     glutTimerFunc(20,timer,0);// Définir le temps pour mise à jour
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(keyboard);
+    glutKeyboardFunc(keydown);
+	glutKeyboardUpFunc(keyup);
     glutMouseFunc(MouseEvent);
     glutPassiveMotionFunc(MotionMove);
-	glutEntryFunc(LeaveWindow);
     glutMainLoop();
 
     return 0;

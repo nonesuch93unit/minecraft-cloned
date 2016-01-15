@@ -21,8 +21,6 @@ public:
 	float accelerx;
 	float accelery;
 	float accelerz;
-	float m_lastx;
-	float m_lasty;
 };
 
 #endif
