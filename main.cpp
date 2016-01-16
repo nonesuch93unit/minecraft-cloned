@@ -20,7 +20,8 @@
 using namespace std;
 
 // La texture que on va utiliser
-GLuint texture;
+GLuint texture1;
+GLuint skybox;
 GLfloat g_angle = 0; 
 GLint width=0,height=0;
 Font fond;
@@ -42,8 +43,8 @@ void LoadGLTextures()
         exit(1);
 
 	// Créer des textures
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture); 
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1); 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -55,6 +56,7 @@ void LoadGLTextures()
     glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY,
             0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
 }
+
 
 // Initialiser les paramètres du OpenGL
 void init()
@@ -89,9 +91,9 @@ void timer(int p)
     glutTimerFunc(20, timer, 0);
 }
 
+
 void display()
 {
-	
 	keyboard.keyboardmovement(world);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -149,7 +151,9 @@ void display()
 	world.viewerMovement();
 	world.afficheworld();
 	world.viewerchoosecube();
-
+	
+	drawGUI(width, height);
+	
 	// Render your 2D text
 	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	//glRasterPos2f(0,2); // 输出位置
