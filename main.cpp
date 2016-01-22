@@ -16,6 +16,8 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "GUI.h"
+#include "skybox.h"
+#include "plants.h"
 
 using namespace std;
 
@@ -39,7 +41,7 @@ void LoadGLTextures()
         exit(0);
     }    
 
-    if (!image1->ImageLoad("texture1.bmp"))
+    if (!image1->ImageLoad("texture.bmp"))
         exit(1);
 
 	// Créer des textures
@@ -53,8 +55,8 @@ void LoadGLTextures()
 	// 2d texture, level of detail 0 (normal), 3 components (red, green, blue), x size from image,
     // y size from image, 
     // border 0 (normal), rgb color data, unsigned byte data, and finally the data itself.
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY,
-            0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image1->sizeX, image1->sizeY,
+            0, GL_RGB, GL_UNSIGNED_BYTE, image1->data1);
 }
 
 
@@ -73,6 +75,8 @@ void init()
     glEnable(GL_DEPTH_TEST);
 	glutSetCursor(GLUT_CURSOR_NONE); 
 	glutIgnoreKeyRepeat(1);
+	glEnable(GL_BLEND);// you enable blending function
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glClearDepth(1.0);   
@@ -94,6 +98,7 @@ void timer(int p)
 
 void display()
 {
+
 	keyboard.keyboardmovement(world);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -148,9 +153,13 @@ void display()
     glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
 
 	glEnd();*/
+	skyboxinit();
 	world.viewerMovement();
 	world.afficheworld();
 	world.viewerchoosecube();
+
+	Plants p(0,1,0,1);
+	p.affichePlants();
 	
 	drawGUI(width, height);
 	

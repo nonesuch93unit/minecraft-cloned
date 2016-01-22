@@ -15,43 +15,43 @@ Cube::Cube(float x, float y, float z, int t)
 	case LAND:
 		for(int i = 0;i<6;i++)
 		{
-			textureX[i] = 2  ;
-			textureY[i] = 15  ;
+			textureX[i] = 0  ;
+			textureY[i] = 0  ;
 		}
 		break;
 	case SAND:
 		for(int i = 0;i<6;i++)
 		{
-			textureX[i] = 2  ;
-			textureY[i] = 14  ;
+			textureX[i] = 1  ;
+			textureY[i] = 0  ;
 		}
 		break;
 	case WOOD:
 		for(int i = 0;i<6;i++)
 		{
 			textureX[i] = 4  ;
-			textureY[i] = 15  ;
+			textureY[i] = 2  ;
 		}
 		break;
 	case PIERRE:
+		for(int i = 0;i<6;i++)
+		{
+			textureX[i] = 5  ;
+			textureY[i] = 0  ;
+		}
+		break;
+	case WATER:
 		for(int i = 0;i<6;i++)
 		{
 			textureX[i] = 0  ;
 			textureY[i] = 15  ;
 		}
 		break;
-	case WATER:
-		for(int i = 0;i<6;i++)
-		{
-			textureX[i] = 15  ;
-			textureY[i] = 3  ;
-		}
-		break;
 	case BRICK:
 		for(int i = 0;i<6;i++)
 		{
-			textureX[i] = 7  ;
-			textureY[i] = 15  ;
+			textureX[i] = 3  ;
+			textureY[i] = 0  ;
 		}
 		break;
 	case SNOW:

@@ -22,14 +22,14 @@ void drawGUI(int width, int height)
     
     glBegin(GL_QUADS);
         
-		glColor4f(0,0,0,0.8);
+		glColor4f(0,0,0,0.4);
         glVertex2i(a + length, b + decalage);
         glVertex2i(a - length, b + decalage);
         glVertex2i(a - length, b - decalage);
 		glVertex2i(a + length, b - decalage);
     glEnd();
 	glBegin(GL_QUADS);
-        glColor4f(0,0,0,0.8);
+        glColor4f(0,0,0,0.4);
         glVertex2i(a + decalage, b + length);
         glVertex2i(a - decalage, b + length);
         glVertex2i(a - decalage, b - length);

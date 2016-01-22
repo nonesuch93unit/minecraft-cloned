@@ -12,13 +12,15 @@ class Image
 public:
     int sizeX;
     int sizeY;
-    char *data;
+    char *data1;
+	char *data2;
 
 public:
 	int ImageLoad(char *filename) //leture un image. retour 1 si echecl, return 0 si reussir
 	{
 		FILE *file;
-		unsigned long size; // Longueur d'image
+		unsigned long size1; // Longueur d'image
+		unsigned long size2; // Longueur d'image
 		unsigned long i;   	// Compter
 		unsigned short int planes;
 		unsigned short int bpp;
@@ -50,8 +52,8 @@ public:
 		//cout << "Height of  " << filename << ":"<< sizeY;
 
 		// Calculer la longueur(24bits ou 3bytes chaque pixel)
-		size = sizeX * sizeY * 3;
-
+		size1 = sizeX * sizeY * 3;
+		size2 = sizeX * sizeY * 4;
 
 		if ((fread(&planes, 2, 1, file)) != 1)
 		{
@@ -80,25 +82,36 @@ public:
 		fseek(file, 24, SEEK_CUR);
 
 
-		data = (char*) malloc (size);
-		if (data == NULL)
+		data1 = (char*) malloc (size1);
+		data2 = (char*) malloc (size2);
+		if (data1 == NULL)
 		{
 			cout << "Error allocating memory for color-corrected image data" << endl;
 			return 0;
 		}
 
-		if ((i = fread(data, size, 1, file)) != 1)
+		if ((i = fread(data1, size1, 1, file)) != 1)
 		{
 			cout << "Error reading image data from " << filename<< endl;
 			return 0;
 		}
 
 		// Changer des couleurs bgr -> rgb
-		for (i = 0; i < size; i += 3)
+		for (i = 0; i < size1; i += 3)
 		{
-			temp = data[i];
-			data[i] = data[i+2];
-			data[i+2] = temp;
+			temp = data1[i];
+			data1[i] = data1[i+2];
+			data1[i+2] = temp;
+		}
+
+		int k = 0;
+		for (i = 0; i < size1; i ++)
+		{
+			if(k % 4 == 3)
+				data2[k] = 1;
+			else
+				data2[k] = data1[i];
+			k++;
 		}
 
 
