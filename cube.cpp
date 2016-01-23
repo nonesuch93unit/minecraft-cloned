@@ -22,8 +22,8 @@ Cube::Cube(float x, float y, float z, int t)
 	case SAND:
 		for(int i = 0;i<6;i++)
 		{
-			textureX[i] = 1  ;
-			textureY[i] = 0  ;
+			textureX[i] = 0  ;
+			textureY[i] = 11  ;
 		}
 		break;
 	case WOOD:
@@ -43,8 +43,8 @@ Cube::Cube(float x, float y, float z, int t)
 	case WATER:
 		for(int i = 0;i<6;i++)
 		{
-			textureX[i] = 0  ;
-			textureY[i] = 15  ;
+			textureX[i] = 13  ;
+			textureY[i] = 12  ;
 		}
 		break;
 	case BRICK:
@@ -88,6 +88,27 @@ Cube::Cube(float x, float y, float z, int t)
 
 void Cube::afficheCube()
 {
+	if(chosen)
+	{
+		glColor3f(1.0f,0.0f,0.0f); 
+		glBegin(GL_LINES);  
+			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);  
+			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);  
+			glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);  
+			glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);  
+
+			glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);  
+			glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);  
+			glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01);  
+			glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01);  
+
+			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);  
+			glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);  
+			glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);  
+			glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01); 
+		glEnd(); 
+	}
+
 	glBegin(GL_QUADS);
 		// Devant
 		glColor3f(1.0f, 1.0f, 1.0f); // ÑÕÉ«
@@ -128,24 +149,5 @@ void Cube::afficheCube()
 
 	glEnd();
 
-	if(chosen)
-	{
-		glColor3f(1.0f,0.0f,0.0f); 
-		glBegin(GL_LINES);  
-			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);  
-			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);  
-			glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);  
-			glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);  
-
-			glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);  
-			glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);  
-			glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01);  
-			glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01);  
-
-			glVertex3f(positionX-0.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY-0.01,positionZ+1.01);  
-			glVertex3f(positionX-0.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX-0.01,positionY+1.01,positionZ+1.01);  
-			glVertex3f(positionX+1.01,positionY-0.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY-0.01,positionZ+1.01);  
-			glVertex3f(positionX+1.01,positionY+1.01,positionZ-0.01);     glVertex3f(positionX+1.01,positionY+1.01,positionZ+1.01); 
-		glEnd(); 
-	}
+	
 }

@@ -6,11 +6,13 @@
 
 void drawGUI(int width, int height)
 {
+
 	int a = width/2; int b = height/2;
 	int length = 12; int decalage = 2;
 	int itemslength = 250; int itemswidth = 50;
 
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -20,16 +22,17 @@ void drawGUI(int width, int height)
     glPushMatrix();
     glLoadIdentity();
     
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glBegin(GL_QUADS);
         
-		glColor4f(0,0,0,0.4);
+		glColor3f(0,0,0);
         glVertex2i(a + length, b + decalage);
         glVertex2i(a - length, b + decalage);
         glVertex2i(a - length, b - decalage);
 		glVertex2i(a + length, b - decalage);
     glEnd();
 	glBegin(GL_QUADS);
-        glColor4f(0,0,0,0.4);
+        glColor3f(0,0,0);
         glVertex2i(a + decalage, b + length);
         glVertex2i(a - decalage, b + length);
         glVertex2i(a - decalage, b - length);
@@ -37,7 +40,7 @@ void drawGUI(int width, int height)
     glEnd();
 
 	glBegin(GL_QUADS);
-        glColor4f(0.5,0.5,0.5,1);
+        glColor3f(0,0,0);
         glVertex2i(a + itemslength, 0);
         glVertex2i(a - itemslength, 0);
         glVertex2i(a - itemslength, itemswidth);
@@ -46,12 +49,14 @@ void drawGUI(int width, int height)
 
 	for(int i = 0; i<10;i++)
 	{
+		float textureX = 0 * 0.0625; 
+		float textureY = 11 * 0.0625; 
 		glBegin(GL_QUADS);
-			glColor4f(1,1,1,1);
-			glVertex2i(155 + i * 50, 45);
-			glVertex2i(155 + i * 50, 5);
-			glVertex2i(195 + i * 50, 5);
-			glVertex2i(195 + i * 50, 45);
+			glColor3f(1,1,1);
+			glTexCoord2f(textureX+0.005, textureY+0.005); glVertex2i(155 + i * 50, 45);
+			glTexCoord2f(textureX+0.060, textureY+0.005); glVertex2i(155 + i * 50, 5);
+			glTexCoord2f(textureX+0.060, textureY+0.060); glVertex2i(195 + i * 50, 5);
+			glTexCoord2f(textureX+0.005, textureY+0.060); glVertex2i(195 + i * 50, 45);
 		glEnd();
 	}
     
@@ -61,6 +66,8 @@ void drawGUI(int width, int height)
     glPopMatrix();
     
     glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);// you enable blending function
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 }
 
 #endif

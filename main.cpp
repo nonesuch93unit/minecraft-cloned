@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "BMPLoad.h"
 #include "View.h"
 #include "font.h"
 #include "cube.h"
@@ -18,6 +17,7 @@
 #include "GUI.h"
 #include "skybox.h"
 #include "plants.h"
+#include <SOIL.h>
 
 using namespace std;
 
@@ -32,31 +32,19 @@ Keyboard keyboard;
 Mouse mouse;
 
 // Lire bitmaps et le transformer en textures
-void LoadGLTextures()
+
+void LoadGLTexture()
 {
-    Image *image1 = new Image;
-    if (image1 == NULL)
-    {
-        printf("Error allocating space for image");
-        exit(0);
-    }    
-
-    if (!image1->ImageLoad("texture.bmp"))
-        exit(1);
-
-	// Créer des textures
-    glGenTextures(1, &texture1);
+	int w = 256; int h = 256;
+	    glGenTextures(1, &texture1);
     glBindTexture(GL_TEXTURE_2D, texture1); 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	// 2d texture, level of detail 0 (normal), 3 components (red, green, blue), x size from image,
-    // y size from image, 
-    // border 0 (normal), rgb color data, unsigned byte data, and finally the data itself.
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image1->sizeX, image1->sizeY,
-            0, GL_RGB, GL_UNSIGNED_BYTE, image1->data1);
+	unsigned char * image = SOIL_load_image("terrain.png", &w, &h, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	
 }
 
 
@@ -81,7 +69,7 @@ void init()
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glClearDepth(1.0);   
 
-	LoadGLTextures(); // Lire une texture
+	LoadGLTexture(); // Lire une texture
 	fond.BuildFont();
 	world.generation();
 	
@@ -106,72 +94,27 @@ void display()
 	gluLookAt(world.viewer.mypositionX,world.viewer.mypositionY,world.viewer.mypositionZ,
 			  world.viewer.mypositionX + world.viewer.objectX,world.viewer.mypositionY + world.viewer.objectY,world.viewer.mypositionZ + world.viewer.objectZ,
 			  0.0,1.0,0.0);  
-	//glTranslatef(0.0f, 0.0f, 0.0f);
-	//glRotatef(g_angle, 0.0, 1.0f, 0.0f);
-	//g_angle += 1.0f;
+
 	// Dessiner un cube
 	glRotatef(g_angle, 1.0, 0.0f, 0.0f);
-	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-    //glClear(GL_COLOR_BUFFER_BIT);
- 
- /* glBegin(GL_QUADS);
-	// Devant
-	glColor3f(1.0f, 1.0f, 1.0f); // 颜色
-    glTexCoord2f(0.01f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.06f, 0.01f); glVertex3f( 1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.06f, 0.06f); glVertex3f( 1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.01f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
 
-	// Gauche
-    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f, 1.0f, 1.0f);
 
-	// Droite
-    glTexCoord2f(0.07f, 0.01f); glVertex3f(1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f(1.0f, 1.0f,-1.0f);
-
-	// Derrière
-    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f, 1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f( 1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f(-1.0f, 1.0f,-1.0f);
 	
-	// Dessus
-    glTexCoord2f(0.07f, 0.01f); glVertex3f(-1.0f, 1.0f,-1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f( 1.0f, 1.0f, 1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f, 1.0f,-1.0f);
-
-	// Dessous
-    glTexCoord2f(0.07f, 0.01f); glVertex3f( 1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.01f); glVertex3f(-1.0f,-1.0f, 1.0f);
-    glTexCoord2f(0.12f, 0.06f); glVertex3f(-1.0f,-1.0f,-1.0f);
-    glTexCoord2f(0.07f, 0.06f); glVertex3f( 1.0f,-1.0f,-1.0f);
-
-	glEnd();*/
-	skyboxinit();
+	//skyboxinit();
 	world.viewerMovement();
+	world.viewerchoose();
 	world.afficheworld();
-	world.viewerchoosecube();
 
-	Plants p(0,1,0,1);
-	p.affichePlants();
 	
+	//cout << world.viewer.objectX << " " << world.viewer.objectY << " " << world.viewer.objectZ << endl;
+	
+	
+	//2d GUI
 	drawGUI(width, height);
-	
 	// Render your 2D text
 	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	//glRasterPos2f(0,2); // 输出位置
 	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");  // 输出文字到屏幕
- 
-	//cout << world.viewer.mypositionX << " " << world.viewer.mypositionY << " " << world.viewer.mypositionZ << endl;
-
-	//2d GUI
-	
 
 	glutSwapBuffers(); 
 }

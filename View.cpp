@@ -12,7 +12,7 @@ View::View()
 	speedy = 0;
 	speedz = 0;
 	accelerx = 0;
-	accelery = -0.01;
+	accelery = -0.04;
 	accelerz = 0;
 }
 

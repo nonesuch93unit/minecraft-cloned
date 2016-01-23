@@ -3,11 +3,14 @@
 
 #include "cube.h"
 #include "View.h"
-#include <vector>
+#include <map>
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
+#include "plants.h"
 using namespace std;
+
+#define MAX 160
 
 class World
 {
@@ -17,18 +20,29 @@ public:
 	bool addCube(float x, float y, float z, int t);
 	void addCubereplace(float x, float y, float z, int t);
 	bool deleteCube(float x, float y, float z);
+	bool existCube(float x, float y, float z);
+
+	bool addplants(float x, float y, float z, int t);
+	void addplantsreplace(float x, float y, float z, int t);
+	bool deleteplants(float x, float y, float z);
+	bool existplants(float x, float y, float z);
+
 	void generation();
 	void afficheworld();
-	bool existCube(float x, float y, float z);
+	
+
 	bool collision();
 	void viewerMovement();
 	void vieweraddCube(int t);
-	void viewerdeletecube();
-	void viewerchoosecube();
+	void vieweraddplants(int t);
+
+	void viewerdelete();
+	void viewerchoose();
 
 
 private:
-	vector<Cube> cubes;
+	map<int,Cube> cubes;
+	map<int,Plants> plants;
 	int chosenx; int choseny; int chosenz;
 	int frontx; int fronty; int frontz;
 	int chosen;

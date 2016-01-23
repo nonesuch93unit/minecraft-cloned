@@ -16,7 +16,7 @@ public:
 
 void Mouse::leftclick(World &world, int button)
 {
-	world.viewerdeletecube(); 
+	world.viewerdelete(); 
 }
 
 void Mouse::rightclick(World &world, int button)
@@ -30,8 +30,8 @@ void Mouse::mousemove(World &world, int x, int y, int width, int height)
 	int centerY = height/2;
 	//cout << x << " " << y << endl;
 	float ang = 0; float coefy = 0;
-	ang = 0.003 * (x - centerX);
-	coefy = 0.003 * (y - centerY);
+	ang = 0.0025 * (x - centerX);
+	coefy = 0.002 * (y - centerY);
 	if(ang < 0) ang = -ang;
 	if(coefy < 0) coefy = -coefy;
 
