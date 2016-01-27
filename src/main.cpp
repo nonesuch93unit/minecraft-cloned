@@ -30,6 +30,9 @@ Font fond;
 World world;
 Keyboard keyboard;
 Mouse mouse;
+int choice;
+int times;
+
 
 // Lire bitmaps et le transformer en textures
 
@@ -42,7 +45,7 @@ void LoadGLTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	unsigned char * image = SOIL_load_image("terrain.png", &w, &h, 0, SOIL_LOAD_RGBA);
+	unsigned char * image = SOIL_load_image("texture.png", &w, &h, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	
 }
@@ -71,8 +74,10 @@ void init()
 
 	LoadGLTexture(); // Lire une texture
 	fond.BuildFont();
-	world.generation();
-	
+	//world.generation();
+	world.readtheworld();
+	choice = 0;
+	times = 0;
 }
 
 //------------------------------------
@@ -100,17 +105,17 @@ void display()
 
 
 	
-	//skyboxinit();
+	skyboxinit();
 	world.viewerMovement();
 	world.viewerchoose();
 	world.afficheworld();
 
 	
 	//cout << world.viewer.objectX << " " << world.viewer.objectY << " " << world.viewer.objectZ << endl;
-	
+	//cout << world.viewer.objectX * world.viewer.objectX + world.viewer.objectZ * world.viewer.objectZ << endl;
 	
 	//2d GUI
-	drawGUI(width, height);
+	drawGUI(width, height, times, choice);
 	// Render your 2D text
 	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
 	//glRasterPos2f(0,2); // 输出位置
@@ -137,6 +142,10 @@ void reshape(int w, int h)
 //Clavier 
 void keydown(unsigned char key, int x, int y)
 {
+	if(key >= '0' && key <= '9') choice = key-'0';
+	if(key == '-') times -= 10;
+	if(key == '=') times += 10;
+	times = (times + 30) % 30;
 	keyboard.setkeydown(key);
 }
 
@@ -149,10 +158,10 @@ void keyup(unsigned char key, int x, int y)
 // Cliquer sur la souris
 void MouseEvent(int button, int state, int x, int y)
 {
-	if(button == 0)
+	if(button == 0 && state == 1)
 		mouse.leftclick(world,button);
-	if(button == 2)
-		mouse.rightclick(world,button);
+	if(button == 2 && state == 1)
+		mouse.rightclick(world,button,choice+times);
 }
 
 //-------------------------------------

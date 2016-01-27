@@ -18,7 +18,7 @@ public:
 
 void Keyboard::keyboardmovement(World &world)
 {
-	float speedmax = 0.3; float coef = 0.2;
+	float speedmax = 0.3; float coef = 0.1;
 	for(int i = 0; i<200; i++)
 	{
 		if(keys[i])
@@ -47,7 +47,7 @@ void Keyboard::keyboardmovement(World &world)
 					break;
 				case ' ':
 					if(world.viewer.speedy > -0.1 && world.viewer.speedy < 0.1)
-						world.viewer.speedy = 0.2;
+						world.viewer.speedy = 0.25;
 					break;
 				case 'q': 
 					world.viewer.mypositionY += 0.1 ;
@@ -55,7 +55,12 @@ void Keyboard::keyboardmovement(World &world)
 				case 'e': 
 					world.viewer.mypositionY -= 0.1 ;
 					break;
+				case 'o': 
+					exit(0);
+					break;
 				case 27: 
+					world.savetheworld();
+					cout << "sucessful to save!" << endl;
 					exit(0);
 					break;
 			}    

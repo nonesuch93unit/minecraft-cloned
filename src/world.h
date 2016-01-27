@@ -8,9 +8,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include "plants.h"
+#include <fstream>
 using namespace std;
 
-#define MAX 160
+#define MAX 16
 
 class World
 {
@@ -38,6 +39,9 @@ public:
 
 	void viewerdelete();
 	void viewerchoose();
+
+	void savetheworld();
+	void readtheworld();
 
 
 private:

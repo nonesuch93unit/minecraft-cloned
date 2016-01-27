@@ -171,7 +171,7 @@ void World::generation()
 		{
 			for(int k = -10; k < 10; k++)
 			{
-				addCubereplace(i,j,k,WATER);
+				addCubereplace(i,j,k,SAND);
 			}
 		}
 	}
@@ -182,7 +182,7 @@ void World::generation()
 			for(int k = -5; k < 5; k++)
 			{
 				if(i+k+2*j < 3 && 2*i+2*j-k < 7 && -i+2*j+k < 6 && -3*i+2*j- k < 6)
-					addCubereplace(i,j,k,SAND);
+					addCubereplace(i,j,k,GRASSLAND);
 			}
 		}
 	}
@@ -205,104 +205,171 @@ void World::afficheworld()
 
 bool World::collision()
 {
+	float x = viewer.mypositionX;
+	float y = viewer.mypositionY;
+	float z = viewer.mypositionZ;
+	int xx,yy,zz;
+	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
+	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
+	(z < 0 && z != (int)z) ? zz = (int)z - 1 : zz = (int)z;
+
 	if(existCube(viewer.mypositionX, viewer.mypositionY-2, viewer.mypositionZ) && viewer.speedy < 0)
 	{
-		viewer.speedy = 0;
-		return true;
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy-2) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
+			viewer.speedy = 0;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX, viewer.mypositionY+1, viewer.mypositionZ) && viewer.speedy > 0)
 	{
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy+1) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedy = 0;
-		return true;
+		//return true;
 	}
 	//
 	if(existCube(viewer.mypositionX+1, viewer.mypositionY-1, viewer.mypositionZ) && viewer.speedx > 0)
 	{
+		int num = 1000000*(MAX+xx+1) + 1000*(MAX+yy-1) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedx = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX-1, viewer.mypositionY-1, viewer.mypositionZ) && viewer.speedx < 0)
 	{
+		int num = 1000000*(MAX+xx-1) + 1000*(MAX+yy-1) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedx = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX, viewer.mypositionY-1, viewer.mypositionZ+1) && viewer.speedz > 0)
 	{
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy-1) + (MAX+zz+1);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedz = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX, viewer.mypositionY-1, viewer.mypositionZ-1) && viewer.speedz < 0)
 	{
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy-1) + (MAX+zz-1);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedz = 0;
-		return true;
+		//return true;
 	}
 	//
 	if(existCube(viewer.mypositionX+1, viewer.mypositionY, viewer.mypositionZ) && viewer.speedx > 0)
 	{
+		int num = 1000000*(MAX+xx+1) + 1000*(MAX+yy) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedx = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX-1, viewer.mypositionY, viewer.mypositionZ) && viewer.speedx < 0)
 	{
+		int num = 1000000*(MAX+xx-1) + 1000*(MAX+yy) + (MAX+zz);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedx = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX, viewer.mypositionY, viewer.mypositionZ+1) && viewer.speedz > 0)
 	{
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz+1);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedz = 0;
-		return true;
+		//return true;
 	}
 	if(existCube(viewer.mypositionX, viewer.mypositionY, viewer.mypositionZ-1) && viewer.speedz < 0)
 	{
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz-1);
+
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
 		viewer.speedz = 0;
-		return true;
+		//return true;
+	}
+
+	//---------------------
+	if(viewer.mypositionY-2 < -MAX && viewer.speedy < 0)
+	{
+		viewer.speedy = 0;
+		//return true;
+	}
+	if(viewer.mypositionY+1 > MAX && viewer.speedy > 0)
+	{
+		viewer.speedy = 0;
+		//return true;
+	}
+	//
+	if(viewer.mypositionX+1 > MAX && viewer.speedx > 0)
+	{
+		viewer.speedx = 0;
+		//return true;
+	}
+	if(viewer.mypositionX-1 < -MAX && viewer.speedx < 0)
+	{
+		viewer.speedx = 0;
+		//return true;
+	}
+	if(viewer.mypositionZ+1 > MAX && viewer.speedz > 0)
+	{
+		viewer.speedz = 0;
+		//return true;
+	}
+	if(viewer.mypositionZ-1 < -MAX && viewer.speedz < 0)
+	{
+		viewer.speedz = 0;
+		//return true;
 	}
 	return false;
 }
 
 void World::viewerMovement()
 {
-	if(!collision())
-	{
-		viewer.movement();
-	}
+	collision();
+	viewer.movement();
 }
 
 void World::vieweraddCube(int t)
 {
-	float a, b, c;
-	for(int i = 2; i <= 5; i++)
+	if(chosen)
 	{
-		a = viewer.mypositionX + i * viewer.objectX;
-		b = viewer.mypositionY + i * viewer.objectY;
-		c = viewer.mypositionZ + i * viewer.objectZ;
-		if(existCube(a,b,c))
-		{
-			a = viewer.mypositionX + (i-0.5) * viewer.objectX;
-			b = viewer.mypositionY + (i-0.5) * viewer.objectY;
-			c = viewer.mypositionZ + (i-0.5) * viewer.objectZ;
-			addCube(a,b,c,1);
-			return;
-		}
+		float x = viewer.mypositionX;
+		float y = viewer.mypositionY;
+		float z = viewer.mypositionZ;
+		int xx,yy,zz;
+		(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
+		(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
+		(z < 0 && z != (int)z) ? zz = (int)z - 1 : zz = (int)z;
+
+		if(xx == frontx && yy == fronty && zz == frontz) return;
+		if(xx == frontx && yy-1 == fronty && zz == frontz) return;
+		addCube(frontx,fronty,frontz,t);
 	}
 }
 
 void World::vieweraddplants(int t)
 {
-	float a, b, c;
-	for(int i = 2; i <= 5; i++)
+	if(chosen)
 	{
-		a = viewer.mypositionX + i * viewer.objectX;
-		b = viewer.mypositionY + i * viewer.objectY;
-		c = viewer.mypositionZ + i * viewer.objectZ;
-		if(existCube(a,b,c))
-		{
-			a = viewer.mypositionX + (i-0.5) * viewer.objectX;
-			b = viewer.mypositionY + (i-0.5) * viewer.objectY;
-			c = viewer.mypositionZ + (i-0.5) * viewer.objectZ;
-			addplants(a,b,c,1);
-			return;
-		}
+		float x = viewer.mypositionX;
+		float y = viewer.mypositionY;
+		float z = viewer.mypositionZ;
+		int xx,yy,zz;
+		(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
+		(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
+		(z < 0 && z != (int)z) ? zz = (int)z - 1 : zz = (int)z;
+
+		if(xx == frontx && yy == fronty && zz == frontz) return;
+		if(xx == frontx && yy-1 == fronty && zz == frontz) return;
+		addplants(frontx,fronty,frontz,t);
 	}
 }
 
@@ -321,22 +388,24 @@ void World::viewerchoose()
 	for(;i!=cubes.end(); i++)
 	{
 		i->second.notchoosecube();
-		chosen = 0;
 	}
 	map<int,Plants>::iterator j = plants.begin();
 	for(;j!=plants.end(); j++)
 	{
 		j->second.notchooseplants();
-		chosen = 0;
 	}
+	chosen = 0;
+
+	chosenx = 0; choseny = 0; chosenz = 0;
+	frontx = -MAX; fronty = -MAX; frontz = -MAX;
 
 	float x, y, z;
 	int xlast = -MAX; int ylast = -MAX; int zlast = -MAX;
-	for(int k = 1; k <= 25; k++)
+	for(int k = 1; k <= 80; k++)
 	{
-		x = viewer.mypositionX + k*1.0/2 * viewer.objectX;
-		y = viewer.mypositionY + k*1.0/2 * viewer.objectY;
-		z = viewer.mypositionZ + k*1.0/2 * viewer.objectZ;
+		x = viewer.mypositionX + k*1.0/5 * viewer.objectX;
+		y = viewer.mypositionY + k*1.0/5 * viewer.objectY;
+		z = viewer.mypositionZ + k*1.0/5 * viewer.objectZ;
 
 		int xx,yy,zz;
 		(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
@@ -344,12 +413,7 @@ void World::viewerchoose()
 		(z < 0 && z != (int)z) ? zz = (int)z - 1 : zz = (int)z;
 
 		if(xlast == xx && ylast == yy && zlast == zz) continue;
-		else
-		{
-			xlast = xx;
-			ylast = yy;
-			zlast = zz;
-		}
+		
 		int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz);
 
 		if(cubes.find(num)!=cubes.end())
@@ -358,6 +422,9 @@ void World::viewerchoose()
 			chosenx = xx; 
 			choseny = yy;
 			chosenz = zz;
+			frontx = xlast;
+			fronty = ylast;
+			frontz = zlast;
 			chosen = 1;
 			return;
 		}
@@ -368,9 +435,63 @@ void World::viewerchoose()
 			chosenx = xx; 
 			choseny = yy;
 			chosenz = zz;
+			frontx = xlast;
+			fronty = ylast;
+			frontz = zlast;
 			chosen = 1;
 			return;
 		}
+
+		
+		xlast = xx;
+		ylast = yy;
+		zlast = zz;
+		
 	}
 }
 
+void World::savetheworld()
+{
+	ofstream outFile("save.txt",ios::out);
+	outFile << viewer.mypositionX << " " << viewer.mypositionY << " " << viewer.mypositionZ << " ";
+	outFile << viewer.objectX << " " << viewer.objectY << " " << viewer.objectZ << endl;
+
+	map<int,Cube>::iterator i = cubes.begin();
+	for(;i!=cubes.end(); i++)
+	{
+		outFile << i->second.getpositionX() << " " << i->second.getpositionY() << " " << i->second.getpositionZ() << " " << i->second.gettype() << endl;
+	}
+	outFile << 1000 << " " << 1000 << " " << 1000 << " " << 1000 << endl;
+	map<int,Plants>::iterator j = plants.begin();
+	for(;j!=plants.end(); j++)
+	{
+		outFile << j->second.getpositionX() << " " << j->second.getpositionY() << " " << j->second.getpositionZ() << " " << j->second.gettype() << endl;
+	}
+	outFile << endl;
+}
+
+void World::readtheworld()
+{
+	ifstream inFile("save.txt", ios::in);
+	inFile >>  viewer.mypositionX >> viewer.mypositionY >> viewer.mypositionZ;
+	inFile >> viewer.objectX >> viewer.objectY >> viewer.objectZ;
+
+	int a,b,c,d;
+	while(1)
+	{
+		inFile >> a >> b >> c >> d;
+		if(a != 1000)
+		{
+			addCubereplace(a,b,c,d);
+			continue;
+		}
+		else
+			break;
+	}
+	while(1)
+	{
+		if(inFile.eof()) break;
+		inFile >> a >> b >> c >> d;
+		addplantsreplace(a,b,c,d);
+	}
+}

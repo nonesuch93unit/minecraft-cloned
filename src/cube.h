@@ -5,22 +5,35 @@
 #include <string.h>
 
 #define LAND 0
-#define SAND 1
-#define WOOD 2
-#define PIERRE 3
-#define WATER 4
-#define BRICK 5
-#define SNOW 6
-#define MAGMA 7
-#define GRASSLAND 8
+#define GRASSLAND 1
+#define SAND 2
+#define WOOD 3
+#define SAND2 4
+#define WATER 5
+#define BRICK 6
+#define WOOD2 7
+#define MAGMA 8
+#define BOOKS 9
+#define BOX 10
+#define YUN 11
+#define LEAVES 12
+#define PIERRE1 13
+#define PIERRE2 14
+#define PIERRE3 15
+#define PIERRE4 16
+#define PIERRE5 17
+#define PIERRE6 18
+#define PIERRE7 19
 
 class Cube
 {
 private:
 	float positionX,positionY,positionZ;
-	float textureX[6], textureY[6];
 	int type;
 	int chosen;
+
+public:
+	float textureX[6], textureY[6];
 
 public:
 	Cube(){}
@@ -30,8 +43,12 @@ public:
 	float getpositionX(){return positionX;}
 	float getpositionY(){return positionY;}
 	float getpositionZ(){return positionZ;}
+	int gettype(){return type;}
 	void choosecube(){chosen = 1;}
 	void notchoosecube(){chosen = 0;}
+	
 };
+
+void gettexture(int t, float &x, float &y);
 
 #endif
