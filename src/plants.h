@@ -17,9 +17,9 @@
 class Plants
 {
 private:
-	float positionX,positionY,positionZ;
-	int type;
-	int chosen;
+	float positionX,positionY,positionZ; //-	Les coordonn¨¦es de cube et plant
+	int type; //-	Le type de cube et plant
+	int chosen; //-	Un identificateur pour juger si un objet est s¨¦lectionn¨¦
 
 public:
 	float textureX, textureY;
@@ -37,6 +37,7 @@ public:
 	void notchooseplants(){chosen = 0;}
 };
 
-void gettexture2(int type, float &x, float &y);
+//Il est affich¨¦ sur la barre d'outils
+void gettextureplantsforGUI(int type, float &x, float &y);
 
 #endif

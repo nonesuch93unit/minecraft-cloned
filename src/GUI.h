@@ -13,6 +13,7 @@ void drawGUI(int width, int height, int times, int choice)
 	int length = 12; int decalage = 2;
 	int itemslength = 250; int itemswidth = 50;
 
+	//Pour afficher l'interface 2D, disable GL_DEPTH_TEST
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
@@ -24,6 +25,9 @@ void drawGUI(int width, int height, int times, int choice)
     glPushMatrix();
     glLoadIdentity();
     
+
+	//---------------------------------
+	//Une partie est la croix milieu
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glBegin(GL_QUADS);
         
@@ -49,6 +53,8 @@ void drawGUI(int width, int height, int times, int choice)
 		glVertex2i(a + itemslength, itemswidth);
     glEnd();
 
+	//---------------------------------
+	//Une partie est la choix de texture
 	if(choice == 0)
 	{
 	glBegin(GL_QUADS);
@@ -70,13 +76,15 @@ void drawGUI(int width, int height, int times, int choice)
 		glEnd();
 	}
 
+	//---------------------------------
+	//Une partie est tous les textures
 	if(times <= 10)
 	{
 		for(int i = 1; i<10;i++)
 		{
 			float textureX; 
 			float textureY; 
-			gettexture(i+times,textureX,textureY);
+			gettexturecubeforGUI(i+times,textureX,textureY);
 			glBegin(GL_QUADS);
 				glColor3f(1,1,1);
 				glTexCoord2f(textureX+0.060, textureY+0.005); glVertex2i(105 + i * 50, 45);
@@ -87,7 +95,7 @@ void drawGUI(int width, int height, int times, int choice)
 		}
 		float textureX; 
 		float textureY; 
-		gettexture(times,textureX,textureY);
+		gettexturecubeforGUI(times,textureX,textureY);
 		glBegin(GL_QUADS);
 			glColor3f(1,1,1);
 			glTexCoord2f(textureX+0.060, textureY+0.005); glVertex2i(105 + 10 * 50, 45);
@@ -102,7 +110,7 @@ void drawGUI(int width, int height, int times, int choice)
 		{
 			float textureX; 
 			float textureY; 
-			gettexture2(i+times,textureX,textureY);
+			gettextureplantsforGUI(i+times,textureX,textureY);
 			glBegin(GL_QUADS);
 				glColor3f(1,1,1);
 				glTexCoord2f(textureX+0.060, textureY+0.005); glVertex2i(105 + i * 50, 45);
@@ -113,7 +121,7 @@ void drawGUI(int width, int height, int times, int choice)
 		}
 		float textureX; 
 		float textureY; 
-		gettexture2(times,textureX,textureY);
+		gettextureplantsforGUI(times,textureX,textureY);
 		glBegin(GL_QUADS);
 			glColor3f(1,1,1);
 			glTexCoord2f(textureX+0.060, textureY+0.005); glVertex2i(105 + 10 * 50, 45);
@@ -123,6 +131,7 @@ void drawGUI(int width, int height, int times, int choice)
 		glEnd();
 	}
     
+	//2d GUI fini, enable GL_DEPTH_TEST
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);

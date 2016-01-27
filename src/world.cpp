@@ -3,6 +3,7 @@
 
 bool World::addCube(float x, float y, float z, int t)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -19,7 +20,7 @@ bool World::addCube(float x, float y, float z, int t)
 		return false;
 	}
 	Cube c(xx, yy, zz, t);
-	int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz);
+	int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz);  // enregistrer une hash relation
 	cubes.insert(map<int, Cube> :: value_type(num, c));
 	cout << "created a cube successfully! cube: (" << x << "," << y << "," <<z << ")" <<endl;
 	return true;
@@ -27,13 +28,14 @@ bool World::addCube(float x, float y, float z, int t)
 
 void World::addCubereplace(float x, float y, float z, int t)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
 	(z < 0 && z != (int)z) ? zz = (int)z - 1 : zz = (int)z;
 
 	int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz);
-	if(cubes.find(num) != cubes.end())
+	if(cubes.find(num) != cubes.end()) // chercher avec la hash relation
 	{
 		//cout << "replaced!" << endl;
 		cubes.erase(num);
@@ -52,6 +54,7 @@ void World::addCubereplace(float x, float y, float z, int t)
 
 bool World::deleteCube(float x, float y, float z)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -70,6 +73,7 @@ bool World::deleteCube(float x, float y, float z)
 
 bool World::existCube(float x, float y, float z)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -84,6 +88,7 @@ bool World::existCube(float x, float y, float z)
 
 bool World::addplants(float x, float y, float z, int t)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -108,6 +113,7 @@ bool World::addplants(float x, float y, float z, int t)
 
 void World::addplantsreplace(float x, float y, float z, int t)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -133,6 +139,7 @@ void World::addplantsreplace(float x, float y, float z, int t)
 
 bool World::deleteplants(float x, float y, float z)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -151,6 +158,7 @@ bool World::deleteplants(float x, float y, float z)
 
 bool World::existplants(float x, float y, float z)
 {
+	//Prenant la partie enti¨¨re
 	int xx,yy,zz;
 	(x < 0 && x != (int)x) ? xx = (int)x - 1 : xx = (int)x;
 	(y < 0 && y != (int)y) ? yy = (int)y - 1 : yy = (int)y;
@@ -217,7 +225,7 @@ bool World::collision()
 	{
 		int num = 1000000*(MAX+xx) + 1000*(MAX+yy-2) + (MAX+zz);
 
-		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA)
+		if(cubes.find(num)->second.gettype() != WATER && cubes.find(num)->second.gettype() != MAGMA) //l'eau et magma n'ont pas les collisions
 			viewer.speedy = 0;
 		//return true;
 	}
@@ -384,6 +392,7 @@ void World::viewerdelete()
 
 void World::viewerchoose()
 {
+	//initialisation
 	map<int,Cube>::iterator i = cubes.begin();
 	for(;i!=cubes.end(); i++)
 	{
@@ -395,7 +404,6 @@ void World::viewerchoose()
 		j->second.notchooseplants();
 	}
 	chosen = 0;
-
 	chosenx = 0; choseny = 0; chosenz = 0;
 	frontx = -MAX; fronty = -MAX; frontz = -MAX;
 
@@ -403,6 +411,7 @@ void World::viewerchoose()
 	int xlast = -MAX; int ylast = -MAX; int zlast = -MAX;
 	for(int k = 1; k <= 80; k++)
 	{
+		// On a fait un ligne a partir de la position
 		x = viewer.mypositionX + k*1.0/5 * viewer.objectX;
 		y = viewer.mypositionY + k*1.0/5 * viewer.objectY;
 		z = viewer.mypositionZ + k*1.0/5 * viewer.objectZ;
@@ -414,7 +423,7 @@ void World::viewerchoose()
 
 		if(xlast == xx && ylast == yy && zlast == zz) continue;
 		
-		int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz);
+		int num = 1000000*(MAX+xx) + 1000*(MAX+yy) + (MAX+zz); // hash cherche
 
 		if(cubes.find(num)!=cubes.end())
 		{

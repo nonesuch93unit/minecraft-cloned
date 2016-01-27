@@ -18,6 +18,8 @@ class World
 public:
 	World(){}
 	~World(){}
+	//--------------------------
+	//-	Ajouter et suprimer les cubes and plants: 
 	bool addCube(float x, float y, float z, int t);
 	void addCubereplace(float x, float y, float z, int t);
 	bool deleteCube(float x, float y, float z);
@@ -28,31 +30,38 @@ public:
 	bool deleteplants(float x, float y, float z);
 	bool existplants(float x, float y, float z);
 
+	//-------------------------------
+	//-	Affichage de le monde virtuel:
 	void generation();
 	void afficheworld();
 	
-
+	//--------------------------
+	//-	La collision
 	bool collision();
+
+	//--------------------------
+	//les operations de viewers
 	void viewerMovement();
 	void vieweraddCube(int t);
 	void vieweraddplants(int t);
-
 	void viewerdelete();
 	void viewerchoose();
 
+	//-------------------------------
+	//Lire et conserver un monde
 	void savetheworld();
 	void readtheworld();
 
 
 private:
-	map<int,Cube> cubes;
+	map<int,Cube> cubes; //-	Enregitre les cubes et plants
 	map<int,Plants> plants;
-	int chosenx; int choseny; int chosenz;
-	int frontx; int fronty; int frontz;
-	int chosen;
+	int chosenx; int choseny; int chosenz; int chosen; //-	Un identificateur pour juger si un objet est s¨¦lectionn¨¦ et les coordonn¨¦es
+	int frontx; int fronty; int frontz; //-	Le cube ou plante avant le cube choix
+	
 
 public:
-	View viewer;
+	View viewer;  //-	Le point de vue
 };
 
 

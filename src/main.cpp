@@ -1,46 +1,38 @@
-﻿#pragma comment(lib, "WINMM.LIB")
-
-#include <windows.h>
-#include <mmsystem.h>
+﻿#include <windows.h>
 #include <iostream>
 #include <GL/glut.h>
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "View.h"
+#include <SOIL.h>
+
 #include "font.h"
 #include "cube.h"
+#include "plants.h"
+#include "View.h"
 #include "world.h"
+
 #include "keyboard.h"
 #include "mouse.h"
 #include "GUI.h"
 #include "skybox.h"
-#include "plants.h"
-#include <SOIL.h>
 
 using namespace std;
 
 // La texture que on va utiliser
-GLuint texture1;
-GLuint skybox;
-GLfloat g_angle = 0; 
+GLuint texture;
 GLint width=0,height=0;
 Font fond;
 World world;
 Keyboard keyboard;
 Mouse mouse;
-int choice;
-int times;
+int choice; //le cube choisi 
+int page; // le page choisi
 
-
-// Lire bitmaps et le transformer en textures
-
+//----------------------------------
+// Lire png et le transformer en textures
 void LoadGLTexture()
 {
-	int w = 256; int h = 256;
-	    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1); 
+	int w = 1024; int h = 1024;
+	glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -50,17 +42,18 @@ void LoadGLTexture()
 	
 }
 
-
+//------------------------------------
 // Initialiser les paramètres du OpenGL
 void init()
 {
+	//window initialisation
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(800, 600);
     glutCreateWindow("Minecraft");
 	
-    glEnable(GL_TEXTURE_2D);
-	// Définir de la couleur d'effacement du framebuffer en blanc                  
+	//parametre de opengl
+    glEnable(GL_TEXTURE_2D);               
     glDepthFunc(GL_LESS);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
@@ -69,15 +62,16 @@ void init()
 	glEnable(GL_BLEND);// you enable blending function
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
+	// Définir de la couleur d'effacement du framebuffer en blanc   
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
     glClearDepth(1.0);   
 
 	LoadGLTexture(); // Lire une texture
-	fond.BuildFont();
-	//world.generation();
+	fond.BuildFont(); //initialisation de font
 	world.readtheworld();
-	choice = 0;
-	times = 0;
+	choice = 1;
+	page = 0;
+	//world.generation();
 }
 
 //------------------------------------
@@ -88,42 +82,40 @@ void timer(int p)
     glutTimerFunc(20, timer, 0);
 }
 
-
+//----------------------------------------
+//construction de la scène
 void display()
 {
-
-	keyboard.keyboardmovement(world);
-
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glLoadIdentity(); 
 	gluLookAt(world.viewer.mypositionX,world.viewer.mypositionY,world.viewer.mypositionZ,
 			  world.viewer.mypositionX + world.viewer.objectX,world.viewer.mypositionY + world.viewer.objectY,world.viewer.mypositionZ + world.viewer.objectZ,
-			  0.0,1.0,0.0);  
+			  0.0,1.0,0.0);  //point de vue
 
-	// Dessiner un cube
-	glRotatef(g_angle, 1.0, 0.0f, 0.0f);
-
-
-	
-	skyboxinit();
+	keyboard.keyboardmovement(world);
+	drawskybox();
 	world.viewerMovement();
 	world.viewerchoose();
+
+	//3d scène
 	world.afficheworld();
 
-	
+	//2d GUI
+	drawGUI(width, height, page, choice);
+
+	// Render your 2D text
+	//glColor3f(0.0f, 0.0f, 0.0f); 
+	//glRasterPos2f(0,2); 
+	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"); 
+
 	//cout << world.viewer.objectX << " " << world.viewer.objectY << " " << world.viewer.objectZ << endl;
 	//cout << world.viewer.objectX * world.viewer.objectX + world.viewer.objectZ * world.viewer.objectZ << endl;
-	
-	//2d GUI
-	drawGUI(width, height, times, choice);
-	// Render your 2D text
-	//glColor3f(0.0f, 0.0f, 0.0f); // 颜色
-	//glRasterPos2f(0,2); // 输出位置
-	//fond.glPrint("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");  // 输出文字到屏幕
-
 	glutSwapBuffers(); 
 }
 
+//-------------------------------------
+//changement de la demension
 void reshape(int w, int h)
 {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h); // Définir la fenêtre OpenGL
@@ -142,10 +134,12 @@ void reshape(int w, int h)
 //Clavier 
 void keydown(unsigned char key, int x, int y)
 {
+	//controle de choix de cube
 	if(key >= '0' && key <= '9') choice = key-'0';
-	if(key == '-') times -= 10;
-	if(key == '=') times += 10;
-	times = (times + 30) % 30;
+	if(key == '-') page -= 10;
+	if(key == '=') page += 10;
+	page = (page + 30) % 30;
+	
 	keyboard.setkeydown(key);
 }
 
@@ -161,7 +155,7 @@ void MouseEvent(int button, int state, int x, int y)
 	if(button == 0 && state == 1)
 		mouse.leftclick(world,button);
 	if(button == 2 && state == 1)
-		mouse.rightclick(world,button,choice+times);
+		mouse.rightclick(world,button,choice+page);
 }
 
 //-------------------------------------
@@ -174,7 +168,6 @@ void MotionMove(int x,int y)
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-
     init();
     glutTimerFunc(20,timer,0);// Définir le temps pour mise à jour
     glutDisplayFunc(display);
@@ -184,6 +177,5 @@ int main(int argc, char *argv[])
     glutMouseFunc(MouseEvent);
     glutPassiveMotionFunc(MotionMove);
     glutMainLoop();
-
     return 0;
 }

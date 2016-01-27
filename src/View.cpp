@@ -22,11 +22,12 @@ View::~View()
 
 void View::movement()
 {
-	if(speedx != 0 || speedz != 0)
+	if(speedx != 0 || speedz != 0) //la frottement
 	{
 		accelerx = -0.5 * speedx;
 		accelerz = -0.5 * speedz;
 	}
+	//Gestion de th¨¦or¨¨me physique
 	mypositionX += speedx;
 	mypositionY += speedy;
 	mypositionZ += speedz;

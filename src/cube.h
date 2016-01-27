@@ -28,9 +28,9 @@
 class Cube
 {
 private:
-	float positionX,positionY,positionZ;
-	int type;
-	int chosen;
+	float positionX,positionY,positionZ;  //-	Les coordonn¨¦es de cube et plant
+	int type; //-	Le type de cube et plant
+	int chosen; //-	Un identificateur pour juger si un objet est s¨¦lectionn¨¦
 
 public:
 	float textureX[6], textureY[6];
@@ -49,6 +49,7 @@ public:
 	
 };
 
-void gettexture(int t, float &x, float &y);
+//Il est affich¨¦ sur la barre d'outils
+void gettexturecubeforGUI(int t, float &x, float &y);
 
 #endif

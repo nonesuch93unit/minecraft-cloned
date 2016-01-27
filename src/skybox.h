@@ -5,7 +5,7 @@
 
 #define TAILLE 64
 
-void skyboxinit()
+void drawskybox()
 {
 	float x[6], y[6];
 	x[0] = 10 * 0.0625 ; y[0] = 12 * 0.0625;
@@ -14,6 +14,8 @@ void skyboxinit()
 	x[3] = 12 * 0.0625 ;  y[3] = 12 * 0.0625;
 	x[4] = 10 * 0.0625 ; y[4] = 13 * 0.0625;
 	x[5] = 10 * 0.0625 ; y[5] = 11 * 0.0625;
+	
+	//affichage de skybox
 	glBegin(GL_QUADS);					   
 		// Devant						    
 		glColor3f(1.0f, 1.0f, 1.0f); // ÑÕÉ«
@@ -54,45 +56,7 @@ void skyboxinit()
 
 	glEnd();
 
-	glBegin(GL_QUADS);					   
-		// Devant						    
-		glColor3f(52.0/255, 224.0/255, 228.0/255); // ÑÕÉ«
-		 glVertex3f(-TAILLE/2, TAILLE/2, TAILLE/2);
-		 glVertex3f(TAILLE/2, TAILLE/2, TAILLE/2);
-		 glVertex3f(TAILLE/2, -TAILLE/2,  TAILLE/2);
-		 glVertex3f(-TAILLE/2, -TAILLE/2, TAILLE/2);
-
-		
-		 glVertex3f(-TAILLE/2, TAILLE/2, -TAILLE/2);
-		 glVertex3f(-TAILLE/2, -TAILLE/2,   -TAILLE/2);
-		 glVertex3f(-TAILLE/2, -TAILLE/2,   TAILLE/2);
-		 glVertex3f(-TAILLE/2, TAILLE/2, TAILLE/2);
-
-		
-		 glVertex3f(TAILLE/2, TAILLE/2, TAILLE/2);
-		 glVertex3f(TAILLE/2, -TAILLE/2  , TAILLE/2);
-		 glVertex3f(TAILLE/2, -TAILLE/2  , -TAILLE/2);
-		 glVertex3f(TAILLE/2, TAILLE/2, -TAILLE/2);
-													
-													
-		 glVertex3f(TAILLE/2, TAILLE/2, -TAILLE/2);
-		 glVertex3f(TAILLE/2, -TAILLE/2  , -TAILLE/2);
-		 glVertex3f(-TAILLE/2  , -TAILLE/2  , -TAILLE/2);
-		 glVertex3f(-TAILLE/2  , TAILLE/2, -TAILLE/2);
 	
-		
-		 glVertex3f(-TAILLE/2  , TAILLE/2, -TAILLE/2);
-		 glVertex3f(-TAILLE/2  , TAILLE/2, TAILLE/2);
-		 glVertex3f(TAILLE/2, TAILLE/2, TAILLE/2);
-		 glVertex3f(TAILLE/2, TAILLE/2, -TAILLE/2);
-
-		
-		 glVertex3f(TAILLE/2,-TAILLE/2, TAILLE/2);
-		 glVertex3f(-TAILLE/2  ,-TAILLE/2, TAILLE/2);
-		 glVertex3f(-TAILLE/2  ,-TAILLE/2, -TAILLE/2);
-		 glVertex3f(TAILLE/2,-TAILLE/2, -TAILLE/2);
-
-	glEnd();
 }
 
 #endif
